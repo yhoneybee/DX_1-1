@@ -8,16 +8,22 @@ public:
 
     Texture* bg;
 
+    Texture* bolt;
+    float bolt_rot;
+    V2 bolt_pos;
+    V2 bolt_end_pos;
+
+    Texture* title;
+    V2 title_pos;
+    V2 title_end_pos;
+
     vector<Texture*> anim;
     Timer* delay;
     int index = 0;
 
     Button* start;
-    Button* credit;
-    Button* end;
-
-    Window* win_credit;
-    ScrollMap* map;
+    Button* option;
+    Button* exit;
 
     int type;
 
@@ -27,4 +33,3 @@ public:
     virtual void Render() override;
     virtual void Release() override;
 };
-

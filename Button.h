@@ -10,7 +10,7 @@ public:
     string text;
     function<void()> func;
 
-    int r = 255, g = 255, b = 255;
+    int r = 255, g = 255, b = 255, a = 255;
 
     float depth;
 

@@ -36,7 +36,7 @@ void Button::Render()
 {
 	if (isOn)
 	{
-		bg->Render(pos, RT_ZERO, { 1,1 }, 0, depth, D3DCOLOR_RGBA(r, g, b, 255));
+		bg->Render(pos, ZERO, ONE, 0, depth, D3DCOLOR_RGBA(r, g, b, a));
 		IMG->Write(text, pos);
 		main_col->Draw();
 	}

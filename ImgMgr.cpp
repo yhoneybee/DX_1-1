@@ -23,7 +23,7 @@ ImgMgr::~ImgMgr()
 	sprite->Release();
 }
 
-Texture* ImgMgr::Add(const string& key, const string& path)
+Texture* ImgMgr::Add(const string& key)
 {
 	auto f = textures.find(key);
 	if (f == textures.end())
@@ -32,7 +32,7 @@ Texture* ImgMgr::Add(const string& key, const string& path)
 		D3DXIMAGE_INFO info;
 
 		char str[256];
-		sprintf(str, "./Resource/image/%s.png", path.c_str());
+		sprintf(str, "./Resource/image/%s.png", key.c_str());
 
 		if (D3DXCreateTextureFromFileExA(DEVICE, str, -2, -2, 0, 0, (D3DFORMAT)0, (D3DPOOL)1, -1, -1, 0, &info, nullptr, &p) == S_OK)
 		{
@@ -43,14 +43,6 @@ Texture* ImgMgr::Add(const string& key, const string& path)
 		return nullptr;
 	}
 	return f->second;
-}
-
-Texture* ImgMgr::Find(const string& key)
-{
-	auto& f = textures.find(key);
-	if (f != textures.end())
-		return f->second;
-	return nullptr;
 }
 
 void ImgMgr::Begin()

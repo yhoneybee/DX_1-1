@@ -11,7 +11,7 @@ void Bullet::Init()
 	switch (type)
 	{
 	case 1:
-		img = IMG->Add("player", "player");
+		img = IMG->Add("player");
 		speed = 2;
 		break;
 	}
@@ -46,7 +46,7 @@ void Bullet::Render()
 {
 	for (auto& i : fxs)
 		i->Render();
-	img->Render(pos, { 0,0,0,0 }, { 1,1 }, 0, 0, D3DCOLOR_RGBA(255, 0, 0, 255));
+	img->Render(pos, { 0,0,0,0 }, ONE, 0, 0, D3DCOLOR_RGBA(255, 0, 0, 255));
 }
 
 void Bullet::Release()

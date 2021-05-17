@@ -9,26 +9,31 @@
 #include <cmath>
 #include <algorithm>
 #include <functional>
+#include <functional>
+#include <mutex>
 
 using namespace std;
 using V3 = D3DXVECTOR3;
 using V2 = D3DXVECTOR2;
 using M = D3DXMATRIX;
 
-const int WINX = 1920;
-const int WINY = 1080;
+const int WINX = 1600;
+const int WINY = 900;
 const V2 CENTER = { WINX / 2,WINY / 2 };
-const int CELLSIZE = 1024;
-const int L = CENTER.x - CELLSIZE / 2;
-const int R = CENTER.x + CELLSIZE / 2;
-const int T = CENTER.y - CELLSIZE / 2;
-const int B = CENTER.y + CELLSIZE / 2;
-const int x_gap = (WINX - CELLSIZE) / 2;
-const int y_gap = (WINY - CELLSIZE) / 2;
+const int CELLSIZE_X = 1600;
+const int CELLSIZE_Y = 900;
+const int L = CENTER.x - CELLSIZE_X / 2;
+const int R = CENTER.x + CELLSIZE_X / 2;
+const int T = CENTER.y - CELLSIZE_Y / 2;
+const int B = CENTER.y + CELLSIZE_Y / 2;
+const V2 gap = { (WINX - CELLSIZE_X) / 2 ,(WINY - CELLSIZE_Y) / 2 };
 
-const RECT RT_ZERO = { 0,0,0,0 };
+const RECT ZERO = { 0,0,0,0 };
+const V2 ONE = { 1,1 };
 
-static bool WIN = false;
+const bool DrawDebug = false;
+
+static bool WIN = true;
 static float time_scale = 1;
 static int score = 0;
 
@@ -55,9 +60,9 @@ enum Tag
 
 //mgr
 #include "st.h"
-#include "CamMgr.h"
 #include "ImgMgr.h"
 #include "ObjMgr.h"
+#include "CamMgr.h"
 #include "TimeMgr.h"
 #include "SceneMgr.h"
 #include "SoundMgr.h"

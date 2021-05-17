@@ -1,4 +1,5 @@
 #pragma once
+#pragma once
 #include "Obj.h"
 class Player :
     public Obj
@@ -6,10 +7,13 @@ class Player :
 public:
     Texture* img;
     Texture* bg;
+    Texture* bg_lower;
     Timer* during;
     Obj* boss;
     V2 start;
     V2 last;
+
+    D3DXCOLOR bg_color[CELLSIZE_X * CELLSIZE_Y];
 
     enum class KeyState
     {
@@ -21,10 +25,10 @@ public:
 
     KeyState key;
 
-    static int cell[CELLSIZE][CELLSIZE];
+    static int cell[CELLSIZE_X][CELLSIZE_Y];
     static float coloring_per;
 
-    int total_cell = pow(CELLSIZE, 2);
+    int total_cell = CELLSIZE_X * CELLSIZE_Y;
     int coloring_cells = 0;
     int temp = 0;
     int spin_force = 0;

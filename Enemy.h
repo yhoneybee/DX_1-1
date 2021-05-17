@@ -14,19 +14,8 @@ public:
     V2 dir;
 
     float cool;
-    float rot;
     int type;
     int spin_force;
-
-    vector<V2> sizes = vector<V2>
-    {
-        {0.5f,0.5f},
-        {1,1},
-        {2,2},
-        {4,4},
-        {6,6},
-        {16,16},
-    };
 
     vector<float> speeds = vector<float>
     {
@@ -37,7 +26,6 @@ public:
         1.5f,
     };
 
-    void Flash();
     void Rush();
     void Shot(int shots);
 

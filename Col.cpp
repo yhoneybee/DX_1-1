@@ -27,16 +27,19 @@ void Col::Set(V2 pos, float w, float h)
 
 void Col::Draw()
 {
-	V2* vs = new V2[5];
-	vs[0] = { float(left),float(top) };
-	vs[1] = { float(right),float(top) };
-	vs[2] = { float(right),float(bottom) };
-	vs[3] = { float(left),float(bottom) };
-	vs[4] = { float(left),float(top) };
+	if (DrawDebug)
+	{
+		V2* vs = new V2[5];
+		vs[0] = { float(left),float(top) };
+		vs[1] = { float(right),float(top) };
+		vs[2] = { float(right),float(bottom) };
+		vs[3] = { float(left),float(bottom) };
+		vs[4] = { float(left),float(top) };
 
-	line->Begin();
-	line->Draw(vs, 5, D3DCOLOR_RGBA(0, 255, 0, 255));
-	line->End();
+		line->Begin();
+		line->Draw(vs, 5, D3DCOLOR_RGBA(0, 255, 0, 255));
+		line->End();
 
-	SAFE_DELETE_ARRAY(vs);
+		SAFE_DELETE_ARRAY(vs);
+	}
 }

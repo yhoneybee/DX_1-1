@@ -2,7 +2,7 @@
 #include "Effect.h"
 
 Effect::Effect(Texture* fx, V2 pos, int rot, int flag)
-	:fx(fx), size{ 1,1 }, pos(pos), flag(flag), rot(rot), alpha(255)
+	:fx(fx), size(ONE), pos(pos), flag(flag), rot(rot), alpha(255)
 {
 	delay = TIME->Create(0.1f);
 	delay->Start();

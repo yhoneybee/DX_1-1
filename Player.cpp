@@ -3,27 +3,46 @@
 
 extern float time_scale;
 
-int Player::cell[CELLSIZE][CELLSIZE] = { 0, };
+int Player::cell[CELLSIZE_X][CELLSIZE_Y] = { 0, };
 float Player::coloring_per = 0;
 
 void Player::Init()
 {
 	boss = OBJ->Find("boss");
-	bg = IMG->Add("gray", "gray");
-	img = IMG->Add("player", "player");
+	bg = IMG->Add("round1_before");
+	bg_lower = IMG->Add("round1_after");
+	img = IMG->Add("player");
+
+	D3DLOCKED_RECT lr;
+
+	bg->p->LockRect(0, &lr, 0, D3DLOCK_DISCARD);
+
+	DWORD* pixel = (DWORD*)lr.pBits;
+
+	for (int y = CELLSIZE_Y - 1; y != -1; --y)
+	{
+		for (int x = CELLSIZE_X - 1; x != -1; --x)
+		{
+			bg_color[y * CELLSIZE_X + x] = pixel[y * CELLSIZE_X + x];
+		}
+	}
+
+	bg->p->UnlockRect(0);
 
 	SetUp();
 
 	main_col = new Col(this, P);
 	during = TIME->Create(2);
 
-	speed = 2;
+	speed = 1;
 	rot = 0;
 	hp = 5;
 	def = 0;
 	draw_mode = false;
 	no_damage = false;
 	last = { 0,0 };
+
+	CAM->scale = { 1.5,1.5,1.5 };
 }
 
 void Player::Update()
@@ -41,7 +60,7 @@ void Player::Update()
 	{
 		rot = 0;
 		no_damage = false;
-		img = IMG->Add("player", "player");
+		img = IMG->Add("player");
 	}
 	else
 	{
@@ -65,7 +84,7 @@ void Player::Update()
 			if (pos.y < T)
 				pos.y = T;
 
-			if (Current() == 2)
+			if (Current() == 2 || Current() == 3)
 				DrawArea();
 			else
 				if (!Near(key, 3))
@@ -86,7 +105,7 @@ void Player::Update()
 			if (pos.y > B)
 				pos.y = B;
 
-			if (Current() == 2)
+			if (Current() == 2 || Current() == 3)
 				DrawArea();
 			else
 				if (!Near(key, 3))
@@ -107,7 +126,7 @@ void Player::Update()
 			if (pos.x < L)
 				pos.x = L;
 
-			if (Current() == 2)
+			if (Current() == 2 || Current() == 3)
 				DrawArea();
 			else
 				if (!Near(key, 3))
@@ -128,7 +147,7 @@ void Player::Update()
 			if (pos.x > R - 1)
 				pos.x = R - 1;
 
-			if (Current() == 2)
+			if (Current() == 2 || Current() == 3)
 				DrawArea();
 			else
 				if (!Near(key, 3))
@@ -148,13 +167,29 @@ void Player::Update()
 		HOT->F5();
 	if (INPUT->Down(VK_F6))
 		HOT->F6();
+	if (INPUT->Down('A'))
+	{
+		printf("fdjk");
+	}
 }
 
 void Player::Render()
 {
 	main_col->Draw();
-	bg->Render(CENTER, RT_ZERO, { 1,1 }, 0, 1, D3DCOLOR_RGBA(150, 150, 150, 255));
-	img->Render(pos, RT_ZERO, { 1,1 }, D3DXToRadian(rot));
+	bg_lower->Render();
+	bg->Render(CENTER, ZERO, ONE, 0, 1, D3DCOLOR_RGBA(255, 255, 255, 255));
+
+	V2 dir;
+
+	switch (key)
+	{
+	case Player::KeyState::UP: dir = { 0,-1 }; break;
+	case Player::KeyState::DOWN: dir = { 0,1 }; break;
+	case Player::KeyState::LEFT: dir = { -1,0 }; break;
+	case Player::KeyState::RIGHT: dir = { 1,0 }; break;
+	}
+
+	img->Render(pos, ZERO, ONE / 4, atan2(dir.x, -dir.y));
 
 	char str[256];
 	sprintf(str, "%.2f%%", (double)coloring_per);
@@ -246,9 +281,9 @@ void Player::SetUp()
 {
 	memset(cell, 0, sizeof(cell));
 
-	for (size_t x = 0; x < CELLSIZE; x++)
-		for (size_t y = 0; y < CELLSIZE; y++)
-			if (x == 0 || x == CELLSIZE - 1 || y == 0 || y == CELLSIZE - 1)
+	for (size_t x = 0; x < CELLSIZE_X; x++)
+		for (size_t y = 0; y < CELLSIZE_Y; y++)
+			if (x == 0 || x == CELLSIZE_X - 1 || y == 0 || y == CELLSIZE_Y - 1)
 				cell[x][y] = 1;
 
 	coloring_per = 0;
@@ -269,8 +304,8 @@ void Player::DrawLine()
 
 	DWORD* pixel = (DWORD*)lr.pBits;
 
-	POINT c = { pos.x - x_gap,pos.y - y_gap };
-	int index = c.y * CELLSIZE + c.x;
+	POINT c = { pos.x - gap.x,pos.y - gap.y };
+	int index = c.y * CELLSIZE_X + c.x;
 
 	cell[c.x][c.y] = 1;
 
@@ -295,47 +330,63 @@ void Player::DrawArea(int draw_flag)
 
 	DWORD* pixel = (DWORD*)lr.pBits;
 
-	for (int y = CELLSIZE - 1; y != -1; --y)
+	for (int y = CELLSIZE_Y - 1; y != -1; --y)
 	{
-		for (int x = CELLSIZE - 1; x != -1; --x)
+		for (int x = CELLSIZE_X - 1; x != -1; --x)
 		{
-			D3DXCOLOR change = pixel[y * CELLSIZE + x];
+			D3DXCOLOR change = bg_color[y * CELLSIZE_X + x];
+
+			if (cell[x + 1][y] & cell[x - 1][y] == 3 || cell[x][y + 1] & cell[x][y - 1] == 3)
+			{
+				change = D3DCOLOR_RGBA(0, 0, 0, 0);
+				cell[x][y] = 3;
+			}
+			if ((x == 0 || x == CELLSIZE_X - 1 || y == 0 || y == CELLSIZE_Y - 1) && (cell[x + 1][y] == 3 || cell[x - 1][y] == 3 || cell[x][y + 1] == 3 || cell[x][y - 1] == 3))
+			{
+				change = D3DCOLOR_RGBA(0, 0, 0, 0);
+				cell[x][y] = 3;
+			}
 
 			switch (cell[x][y])
 			{
 			case 0:
-				change = D3DCOLOR_RGBA(255, 255, 255, 255);
+				change = bg_color[y * CELLSIZE_X + x];
 				break;
 			case 1:
 				if (draw_flag == 2)
 				{
-					change = D3DCOLOR_RGBA(255, 255, 255, 255);
+					change = bg_color[y * CELLSIZE_X + x];
 					cell[x][y] = 0;
 					break;
 				}
-				change = D3DCOLOR_RGBA(0, 255, 0, 0);
+				change = D3DCOLOR_RGBA(0, 255, 0, 255);
+				cell[x][y] = 2;
 
 				last = { float(x),float(y) };
 
-				cell[x][y] = 2;
-
-				if (cell[x + 1][y] & cell[x - 1][y] == 3 || cell[x][y + 1] & cell[x][y - 1] == 3)
-					cell[x][y] = 3;
-
 				coloring_cells++;
-
+				break;
+			case 2:
+				change = D3DCOLOR_RGBA(0, 255, 0, 255);
+				break;
 			case 3:
-				if (cell[x][y] == 3)
-					change = D3DCOLOR_RGBA(255, 255, 255, 0);
+				change = D3DCOLOR_RGBA(0, 0, 0, 0);
 			}
 
-			pixel[y * CELLSIZE + x] = change;
+			pixel[y * CELLSIZE_X + x] = change;
 		}
 	}
 
 	bg->p->UnlockRect(0);
 
-	if (draw_flag == 0)
+
+	char str[256];
+	int y = CELLSIZE_Y - 1;
+	int x = CELLSIZE_X - 1;
+	sprintf(str, "\n%d\n%d\n", y * CELLSIZE_X + x, total_cell);
+	OutputDebugStringA(str);
+
+	if (draw_flag != 1)
 		AutoFill();
 }
 
@@ -343,6 +394,7 @@ bool Player::FloodFill(V2 pos, int target, int change)
 {
 	if (target == change) return true;
 	if (cell[(int)pos.x][(int)pos.y] != target) return true;
+	if (pos.x < 0 || pos.y < 0 || pos.x > CELLSIZE_X - 1 || pos.y > CELLSIZE_Y - 1) return true;
 
 	queue<V2> v2q;
 
@@ -364,8 +416,8 @@ bool Player::FloodFill(V2 pos, int target, int change)
 		V2 n = v2q.front();
 		v2q.pop();
 
-		if (n.x == (int)(boss->pos.x - x_gap) &&
-			n.y == (int)(boss->pos.y - y_gap))
+		if (n.x == (int)(boss->pos.x - gap.x) &&
+			n.y == (int)(boss->pos.y - gap.y))
 			return false;
 		if (cell[(int)n.x - 1][(int)n.y] == target)
 		{
@@ -402,10 +454,7 @@ bool Player::FloodFill(V2 pos, int target, int change)
 	coloring_cells += temp;
 
 	float temp1 = coloring_cells * 100;
-	coloring_per = temp1 / pow(CELLSIZE, 2);
-
-	draw_mode = true;
-	DrawArea(1);
+	coloring_per = temp1 / total_cell;
 
 	return true;
 }
@@ -414,33 +463,33 @@ void Player::AutoFill()
 {
 	if (last == V2(0, 0))
 		return;
-
-	bool isOk = FloodFill({ last.x + 1, last.y + 1 }, 0, 100);
-
-	if (isOk)
-		FloodFill({ last.x + 1, last.y + 1 }, 100, 3);
-	else
-	{
-		FloodFill({ last.x - 1, last.y + 1 }, 0, 3);
-		FloodFill({ last.x + 1, last.y + 1 }, 100, 0);
-
-		isOk = FloodFill({ last.x + 1, last.y - 1 }, 0, 100);
-
-		if (isOk)
-			FloodFill({ last.x + 1, last.y - 1 }, 100, 3);
-		else
-		{
-			FloodFill({ last.x + 1, last.y + 1 }, 0, 3);
-			FloodFill({ last.x + 1, last.y - 1 }, 100, 0);
-		}
-	}
-
 	last = { 0,0 };
+
+	V2 value[4];
+
+	value[0] = { -1,-1 };
+	value[1] = { 1,1 };
+	value[2] = { -1,1 };
+	value[3] = { 1,-1 };
+
+	bool isOk[4];
+
+	for (size_t i = 0; i < 4; i++)
+		isOk[i] = FloodFill({ pos.x - gap.x + value[i].x ,pos.y - gap.y + value[i].y }, 0, 100);
+
+	for (size_t i = 0; i < 4; i++)
+		if (isOk[i])
+			FloodFill({ pos.x - gap.x + value[i].x ,pos.y - gap.y + value[i].y }, 100, 3);
+		else
+			FloodFill({ pos.x - gap.x + value[i].x ,pos.y - gap.y + value[i].y }, 100, 0);
+
+	draw_mode = true;
+	DrawArea(1);
 }
 
 void Player::AddItem()
 {
-	int temp_per = double(coloring_cells + temp) * 100 / pow(CELLSIZE, 2) - double(coloring_cells * 100) / pow(CELLSIZE, 2);
+	int temp_per = double(coloring_cells + temp) * 100 / total_cell - double(coloring_cells * 100) / total_cell;
 
 	for (size_t i = 0; i < temp_per % 2; i++)
 		OBJ->Add(new Item(RANDOM->INT(1, 5)), "Item")->pos = { float(RANDOM->INT(L + 1, R - 1)),float(RANDOM->INT(T + 1, B - 1)) };
@@ -449,13 +498,13 @@ void Player::AddItem()
 void Player::NoDamage()
 {
 	during->Start();
-	img = IMG->Add("player1", "player1");
+	img = IMG->Add("player1");
 }
 
 bool Player::Near(KeyState dir, int target)
 {
-	int cx = pos.x - x_gap;
-	int cy = pos.y - y_gap;
+	int cx = pos.x - gap.x;
+	int cy = pos.y - gap.y;
 
 	switch (dir)
 	{
@@ -476,5 +525,5 @@ bool Player::Near(KeyState dir, int target)
 
 int Player::Current()
 {
-	return cell[(int)pos.x - x_gap][(int)pos.y - y_gap];
+	return cell[int(pos.x - gap.x)][int(pos.y - gap.y)];
 }
