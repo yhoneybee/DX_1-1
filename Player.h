@@ -42,12 +42,15 @@ public:
     bool no_damage = false;
 
     void SetUp();
+
+    DWORD* Pixel();
+
     void DrawLine();
 
     // 0 normal, 1 filled, 2 cancel
     void DrawArea(int draw_flag = 0);
 
-    bool FloodFill(V2 pos, int target, int change);
+    bool FloodFill(V2 pos, int target, int change, bool isCheck = false);
     void AutoFill();
     void AddItem();
     void NoDamage();
@@ -56,6 +59,7 @@ public:
 
     void little_sleep(milliseconds us);
     void Flash();
+    bool isFlashing;
     thread* flash_thread;
     recursive_mutex mtx;
 

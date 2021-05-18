@@ -87,7 +87,7 @@ void Player::Update()
 			if (Current() == 2 || Current() == 3)
 				DrawArea();
 			else
-				if (!Near(key, 3))
+				if (!Near(key, 3) && !Near(key, -1))
 					DrawLine();
 		}
 	}
@@ -108,7 +108,7 @@ void Player::Update()
 			if (Current() == 2 || Current() == 3)
 				DrawArea();
 			else
-				if (!Near(key, 3))
+				if (!Near(key, 3) && !Near(key, -1))
 					DrawLine();
 		}
 	}
@@ -129,7 +129,7 @@ void Player::Update()
 			if (Current() == 2 || Current() == 3)
 				DrawArea();
 			else
-				if (!Near(key, 3))
+				if (!Near(key, 3) && !Near(key, -1))
 					DrawLine();
 		}
 	}
@@ -150,7 +150,7 @@ void Player::Update()
 			if (Current() == 2 || Current() == 3)
 				DrawArea();
 			else
-				if (!Near(key, 3))
+				if (!Near(key, 3) && !Near(key, -1))
 					DrawLine();
 		}
 	}
@@ -292,15 +292,24 @@ void Player::SetUp()
 	DrawArea();
 }
 
-void Player::DrawLine()
+DWORD* Player::Pixel()
 {
-	draw_mode = true;
-
 	D3DLOCKED_RECT lr;
 
 	bg->p->LockRect(0, &lr, 0, D3DLOCK_DISCARD);
 
-	DWORD* pixel = (DWORD*)lr.pBits;
+	pixel = (DWORD*)lr.pBits;
+
+	bg->p->UnlockRect(0);
+
+	return pixel;
+}
+
+void Player::DrawLine()
+{
+	draw_mode = true;
+
+	DWORD* pixel = Pixel();
 
 	POINT c = { pos.x - gap.x,pos.y - gap.y };
 	int index = c.y * CELLSIZE_X + c.x;
@@ -321,11 +330,7 @@ void Player::DrawArea(int draw_flag)
 	}
 	draw_mode = false;
 
-	D3DLOCKED_RECT lr;
-
-	bg->p->LockRect(0, &lr, 0, D3DLOCK_DISCARD);
-
-	pixel = (DWORD*)lr.pBits;
+	DWORD* pixel = Pixel();
 
 	for (int y = CELLSIZE_Y - 1; y != -1; --y)
 	{
@@ -380,26 +385,18 @@ void Player::DrawArea(int draw_flag)
 		}
 	}
 
-	bg->p->UnlockRect(0);
-
-	char str[256];
-	int y = CELLSIZE_Y - 1;
-	int x = CELLSIZE_X - 1;
-	sprintf(str, "\n%d\n%d\n", y * CELLSIZE_X + x, total_cell);
-	OutputDebugStringA(str);
-
 	if (draw_flag != 1)
 		AutoFill();
 }
 
-bool Player::FloodFill(V2 pos, int target, int change)
+bool Player::FloodFill(V2 pos, int target, int change, bool isCheck)
 {
 	int pos_x = pos.x;
 	int pos_y = pos.y;
 
 	if (target == change) return true;
 	if (cell[pos_x][pos_y] != target) return true;
-	if (pos.x < 0 || pos.y < 0 || pos.x > CELLSIZE_X - 1 || pos.y > CELLSIZE_Y - 1) return true;
+	if (pos_x < 0 || pos_y < 0 || pos_x > CELLSIZE_X - 1 || pos_y > CELLSIZE_Y - 1) return true;
 
 	queue<V2> v2q;
 
@@ -409,48 +406,68 @@ bool Player::FloodFill(V2 pos, int target, int change)
 	if (change == 3)
 		add = true;
 
-	cell[pos_x][pos_y] = change;
+	if (!isCheck)
+	{
+		cell[pos_x][pos_y] = change;
+		if (add)
+			temp++;
+	}
 
-	v2q.push(pos);
+	v2q.push({ float(pos_x),float(pos_y) });
 
-	if (add)
-		temp++;
+	char str[256];
 
 	while (!v2q.empty())
 	{
 		V2 n = v2q.front();
 		v2q.pop();
 
-		if (n.x == (int)(boss->pos.x - gap.x) &&
-			n.y == (int)(boss->pos.y - gap.y))
-			return false;
+		sprintf(str, "n : %d\n", int(v2q.size()));
+		OutputDebugStringA(str);
+
+		if (!isCheck)
+			if (n.x == (int)(boss->pos.x - gap.x) && n.y == (int)(boss->pos.y - gap.y))
+				return false;
+
 		if (cell[(int)n.x - 1][(int)n.y] == target)
 		{
-			cell[(int)n.x - 1][(int)n.y] = change;
+			if (!isCheck)
+			{
+				cell[(int)n.x - 1][(int)n.y] = change;
+				if (add)
+					temp++;
+			}
 			v2q.push({ n.x - 1, n.y });
-			if (add)
-				temp++;
 		}
 		if (cell[(int)n.x + 1][(int)n.y] == target)
 		{
-			cell[(int)n.x + 1][(int)n.y] = change;
+			if (!isCheck)
+			{
+				cell[(int)n.x + 1][(int)n.y] = change;
+				if (add)
+					temp++;
+			}
 			v2q.push({ n.x + 1, n.y });
-			if (add)
-				temp++;
 		}
 		if (cell[(int)n.x][(int)n.y - 1] == target)
 		{
-			cell[(int)n.x][(int)n.y - 1] = change;
+			if (!isCheck)
+			{
+				cell[(int)n.x][(int)n.y - 1] = change;
+				if (add)
+					temp++;
+			}
 			v2q.push({ n.x, n.y - 1 });
-			if (add)
-				temp++;
 		}
 		if (cell[(int)n.x][(int)n.y + 1] == target)
 		{
-			cell[(int)n.x][(int)n.y + 1] = change;
+			if (!isCheck)
+			{
+				cell[(int)n.x][(int)n.y + 1] = change;
+				if (add)
+					temp++;
+			}
 			v2q.push({ n.x, n.y + 1 });
-			if (add)
-				temp++;
 		}
 	}
 
@@ -474,28 +491,20 @@ void Player::AutoFill()
 	last = { 0,0 };
 
 	V2 value[4];
+	bool isOk[4] = { 0, };
 	value[0] = { -1,-1 };
 	value[1] = { 1,1 };
 	value[2] = { -1,1 };
 	value[3] = { 1,-1 };
 
-	bool isOk[4];
-
 	for (size_t i = 0; i < 4; i++)
 	{
 		temp_pos = { pos.x - gap.x + value[i].x ,pos.y - gap.y + value[i].y };
-		isOk[i] = FloodFill(temp_pos, 0, 100);
-		if (isOk[i])
-		{
-			//FloodFill(temp_pos, 100, 3);
-			flash_thread = new thread([&]()->void {Player::Flash(); });
-		}
-		else
-			FloodFill(temp_pos, 100, 0);
+		isOk[i] = FloodFill(temp_pos, 0, 100, true);
 	}
-
-	draw_mode = true;
-	DrawArea(1);
+	for (size_t i = 0; i < 4; i++)
+		if (isOk[i])
+			flash_thread = new thread([&]()->void {Player::Flash(); });
 }
 
 void Player::AddItem()
@@ -550,15 +559,14 @@ void Player::little_sleep(milliseconds us)
 
 void Player::Flash()
 {
-	FloodFill(temp_pos, 100, 3);
-
-	little_sleep(milliseconds(1000));
-
-	for (size_t i = 0; i < 3; i++)
+	FloodFill(temp_pos, 0, 3);
+	for (size_t i = 0; i < 2; ++i)
 	{
 		FloodFill(temp_pos, 3, -1);
-		little_sleep(milliseconds(1000));
+		Sleep(100);
 		FloodFill(temp_pos, -1, 3);
-		little_sleep(milliseconds(1000));
+		Sleep(100);
+		//little_sleep(milliseconds(100));
+		//little_sleep(milliseconds(100));
 	}
 }
