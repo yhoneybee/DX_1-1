@@ -12,6 +12,9 @@
 #include <functional>
 #include <mutex>
 #include <chrono>
+#include <future>
+#include <condition_variable>
+#include <cstdio>
 
 using namespace std;
 using namespace std::chrono;
@@ -63,6 +66,8 @@ enum Tag
 
 #include "SDKsound.h"
 #include "SDKwavefile.h"
+
+#include "ThreadPool.h"
 
 //mgr
 #include "st.h"

@@ -44,7 +44,6 @@ void Ingame::Update()
 
 void Ingame::Render()
 {
-	bg->Render();
 }
 
 void Ingame::Release()

@@ -21,7 +21,6 @@ void SceneMgr::Set(const string& key)
 	auto f = scenes.find(key);
 	if (f != scenes.end())
 	{
-		flag = false;
 		if (now)
 			now->Release();
 		now = f->second;
@@ -35,15 +34,14 @@ void SceneMgr::Update()
 	{
 		now->Init();
 		HOT->Reset();
-		flag = true;
 	}
 
-	if (flag && now)
+	if (now)
 		now->Update();
 }
 
 void SceneMgr::Render()
 {
-	if (flag && now)
+	if (now)
 		now->Render();
 }

@@ -13,6 +13,8 @@ void Player::Init()
 	bg_lower = IMG->Add("round1_after");
 	img = IMG->Add("player");
 
+	thread_pool = new ThreadPool(10);
+
 	D3DLOCKED_RECT lr;
 
 	bg->p->LockRect(0, &lr, 0, D3DLOCK_DISCARD);
@@ -84,7 +86,7 @@ void Player::Update()
 			if (pos.y < T)
 				pos.y = T;
 
-			if (Current() == 2 || Current() == 3)
+			if (Current() == 2)
 				DrawArea();
 			else
 				if (!Near(key, 3) && !Near(key, -1))
@@ -105,7 +107,7 @@ void Player::Update()
 			if (pos.y > B)
 				pos.y = B;
 
-			if (Current() == 2 || Current() == 3)
+			if (Current() == 2)
 				DrawArea();
 			else
 				if (!Near(key, 3) && !Near(key, -1))
@@ -126,7 +128,7 @@ void Player::Update()
 			if (pos.x < L)
 				pos.x = L;
 
-			if (Current() == 2 || Current() == 3)
+			if (Current() == 2)
 				DrawArea();
 			else
 				if (!Near(key, 3) && !Near(key, -1))
@@ -147,7 +149,7 @@ void Player::Update()
 			if (pos.x > R - 1)
 				pos.x = R - 1;
 
-			if (Current() == 2 || Current() == 3)
+			if (Current() == 2)
 				DrawArea();
 			else
 				if (!Near(key, 3) && !Near(key, -1))
@@ -321,7 +323,7 @@ void Player::DrawLine()
 	bg->p->UnlockRect(0);
 }
 
-void Player::DrawArea(int draw_flag)
+void Player::DrawArea(int draw_flag, bool isFlashing)
 {
 	if (!draw_mode)
 	{
@@ -338,18 +340,13 @@ void Player::DrawArea(int draw_flag)
 		{
 			D3DXCOLOR change = bg_color[y * CELLSIZE_X + x];
 
-			if (cell[x + 1][y] & cell[x - 1][y] == 3 || cell[x][y + 1] & cell[x][y - 1] == 3)
-			{
-				change = D3DCOLOR_RGBA(0, 0, 0, 0);
-				cell[x][y] = 3;
-			}
-			if ((x == 0 && cell[x + 1][y] == 3) ||
+			if ((cell[x + 1][y] & cell[x - 1][y] == 3 || cell[x][y + 1] & cell[x][y - 1] == 3) ||
+				(x == 0 && cell[x + 1][y] == 3) ||
 				(x == CELLSIZE_X - 1 && cell[x - 1][y] == 3) ||
 				(y == 0 && cell[x][y + 1] == 3) ||
 				(y == CELLSIZE_Y - 1 && cell[x][y - 1] == 3))
 			{
 				change = D3DCOLOR_RGBA(0, 0, 0, 0);
-				cell[x][y] = 3;
 			}
 
 			switch (cell[x][y])
@@ -361,6 +358,11 @@ void Player::DrawArea(int draw_flag)
 				change = bg_color[y * CELLSIZE_X + x];
 				break;
 			case 1:
+				if (isFlashing)
+				{
+					change = D3DCOLOR_RGBA(255, 0, 0, 255);
+					break;
+				}
 				if (draw_flag == 2)
 				{
 					change = bg_color[y * CELLSIZE_X + x];
@@ -389,14 +391,11 @@ void Player::DrawArea(int draw_flag)
 		AutoFill();
 }
 
-bool Player::FloodFill(V2 pos, int target, int change, bool isCheck)
+int Player::FloodFill(V2 pos, int target, int change, bool isFlashing)
 {
-	int pos_x = pos.x;
-	int pos_y = pos.y;
-
-	if (target == change) return true;
-	if (cell[pos_x][pos_y] != target) return true;
-	if (pos_x < 0 || pos_y < 0 || pos_x > CELLSIZE_X - 1 || pos_y > CELLSIZE_Y - 1) return true;
+	if (target == change) return 1;
+	if (cell[int(pos.x)][int(pos.y)] != target) return 2;
+	if (int(pos.x) < 0 || int(pos.y) < 0 || int(pos.x) > CELLSIZE_X - 1 || int(pos.y) > CELLSIZE_Y - 1) return 3;
 
 	queue<V2> v2q;
 
@@ -406,82 +405,54 @@ bool Player::FloodFill(V2 pos, int target, int change, bool isCheck)
 	if (change == 3)
 		add = true;
 
-	if (!isCheck)
-	{
-		cell[pos_x][pos_y] = change;
-		if (add)
-			temp++;
-	}
+	cell[int(pos.x)][int(pos.x)] = change;
+	if (add)
+		temp++;
 
-	v2q.push({ float(pos_x),float(pos_y) });
-
-	char str[256];
+	v2q.push(pos);
 
 	while (!v2q.empty())
 	{
 		V2 n = v2q.front();
 		v2q.pop();
 
-		sprintf(str, "n : %d\n", int(v2q.size()));
-		OutputDebugStringA(str);
-
-		if (!isCheck)
-			if (n.x == (int)(boss->pos.x - gap.x) && n.y == (int)(boss->pos.y - gap.y))
-				return false;
+		if (n.x == (int)(boss->pos.x - gap.x) && n.y == (int)(boss->pos.y - gap.y))
+			return 4;
 
 		if (cell[(int)n.x - 1][(int)n.y] == target)
 		{
-			if (!isCheck)
-			{
-				cell[(int)n.x - 1][(int)n.y] = change;
-				if (add)
-					temp++;
-			}
+			cell[(int)n.x - 1][(int)n.y] = change;
+			if (add)
+				temp++;
 			v2q.push({ n.x - 1, n.y });
 		}
 		if (cell[(int)n.x + 1][(int)n.y] == target)
 		{
-			if (!isCheck)
-			{
-				cell[(int)n.x + 1][(int)n.y] = change;
-				if (add)
-					temp++;
-			}
+			cell[(int)n.x + 1][(int)n.y] = change;
+			if (add)
+				temp++;
 			v2q.push({ n.x + 1, n.y });
 		}
 		if (cell[(int)n.x][(int)n.y - 1] == target)
 		{
-			if (!isCheck)
-			{
-				cell[(int)n.x][(int)n.y - 1] = change;
-				if (add)
-					temp++;
-			}
+			cell[(int)n.x][(int)n.y - 1] = change;
+			if (add)
+				temp++;
 			v2q.push({ n.x, n.y - 1 });
 		}
 		if (cell[(int)n.x][(int)n.y + 1] == target)
 		{
-			if (!isCheck)
-			{
-				cell[(int)n.x][(int)n.y + 1] = change;
-				if (add)
-					temp++;
-			}
+			cell[(int)n.x][(int)n.y + 1] = change;
+			if (add)
+				temp++;
 			v2q.push({ n.x, n.y + 1 });
 		}
 	}
 
-	AddItem();
-
-	coloring_cells += temp;
-
-	float temp1 = coloring_cells * 100;
-	coloring_per = temp1 / total_cell;
-
 	draw_mode = true;
-	DrawArea(1);
+	DrawArea(1, isFlashing);
 
-	return true;
+	return 0;
 }
 
 void Player::AutoFill()
@@ -491,7 +462,7 @@ void Player::AutoFill()
 	last = { 0,0 };
 
 	V2 value[4];
-	bool isOk[4] = { 0, };
+	int isOk[4] = { 0, };
 	value[0] = { -1,-1 };
 	value[1] = { 1,1 };
 	value[2] = { -1,1 };
@@ -500,11 +471,17 @@ void Player::AutoFill()
 	for (size_t i = 0; i < 4; i++)
 	{
 		temp_pos = { pos.x - gap.x + value[i].x ,pos.y - gap.y + value[i].y };
-		isOk[i] = FloodFill(temp_pos, 0, 100, true);
+		isOk[i] = FloodFill(temp_pos, 0, 100);
+		if (isOk[i] == 0)
+		{
+			FloodFill(temp_pos, 100, 3);
+			/*new thread([&]()->void {Player::Flash(temp_pos); });*/
+			thread_pool->EnqueueJob([&]()->void {Player::Flash(temp_pos); });
+			break;
+		}
+		else
+			FloodFill(temp_pos, 100, 0);
 	}
-	for (size_t i = 0; i < 4; i++)
-		if (isOk[i])
-			flash_thread = new thread([&]()->void {Player::Flash(); });
 }
 
 void Player::AddItem()
@@ -557,16 +534,14 @@ void Player::little_sleep(milliseconds us)
 	} while (high_resolution_clock::now() < end);
 }
 
-void Player::Flash()
+void Player::Flash(V2 v2)
 {
-	FloodFill(temp_pos, 0, 3);
+	little_sleep(milliseconds(500));
 	for (size_t i = 0; i < 2; ++i)
 	{
-		FloodFill(temp_pos, 3, -1);
-		Sleep(100);
-		FloodFill(temp_pos, -1, 3);
-		Sleep(100);
-		//little_sleep(milliseconds(100));
-		//little_sleep(milliseconds(100));
+		FloodFill(temp_pos, 3, -1, true);
+		little_sleep(milliseconds(500));
+		FloodFill(temp_pos, -1, 3, true);
+		little_sleep(milliseconds(500));
 	}
 }

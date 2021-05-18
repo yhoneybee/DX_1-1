@@ -15,8 +15,6 @@ public:
 
     map<string, Scene*> scenes;
     Scene* now = nullptr;
-
-    bool flag = false;
 };
 
 #define SCENE SceneMgr::G()

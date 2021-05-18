@@ -75,6 +75,9 @@
     <Filter Include="CLASS\ScrollMap">
       <UniqueIdentifier>{039ea4ab-bd08-4d59-b499-4fef2ea7ab71}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Mgr\ThreadPool">
+      <UniqueIdentifier>{37c06712-dd0d-4088-8374-545a0713aed3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXUT\Optional\directx.ico">
@@ -218,6 +221,9 @@
     <ClCompile Include="ScrollMap.cpp">
       <Filter>CLASS\ScrollMap</Filter>
     </ClCompile>
+    <ClCompile Include="ThreadPool.cpp">
+      <Filter>Mgr\ThreadPool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -304,6 +310,9 @@
     </ClInclude>
     <ClInclude Include="ScrollMap.h">
       <Filter>CLASS\ScrollMap</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadPool.h">
+      <Filter>Mgr\ThreadPool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

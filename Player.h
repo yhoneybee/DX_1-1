@@ -48,9 +48,10 @@ public:
     void DrawLine();
 
     // 0 normal, 1 filled, 2 cancel
-    void DrawArea(int draw_flag = 0);
+    void DrawArea(int draw_flag = 0, bool isFlashing = false);
 
-    bool FloodFill(V2 pos, int target, int change, bool isCheck = false);
+    // 0 OK, 1 T == C, 2 CELL != T, 3 OUT OF RANGE, 4 BOSS
+    int FloodFill(V2 pos, int target, int change, bool isFlashing = false);
     void AutoFill();
     void AddItem();
     void NoDamage();
@@ -58,10 +59,9 @@ public:
     int  Current();
 
     void little_sleep(milliseconds us);
-    void Flash();
-    bool isFlashing;
-    thread* flash_thread;
-    recursive_mutex mtx;
+    void Flash(V2 v2);
+
+    ThreadPool* thread_pool;
 
     // Obj을(를) 통해 상속됨
     virtual void Init() override;
@@ -72,4 +72,3 @@ public:
     virtual void Stay(Col* p) override;
     virtual void Exit(Col* p) override;
 };
-

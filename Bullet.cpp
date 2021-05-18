@@ -32,7 +32,14 @@ void Bullet::Update()
 	main_col->Set(pos, 15, 15);
 
 	int range = 3;
-	V2 c = { trunc(pos.x) - 460, trunc(pos.y) - 40 };
+	POINT c = { trunc(pos.x), trunc(pos.y) };
+
+	if (Player::cell[c.x][c.y] == 3)
+		if (type < 7)
+		{
+			flag = true;
+			return;
+		}
 
 	for (int y = -range; y <= range; y++)
 		for (int x = -range; x <= range; x++)
