@@ -6,6 +6,8 @@ CamMgr::CamMgr()
 	Reset();
 
 	D3DXMatrixOrthoLH(&pro, size.x, -size.y, 0, 1);
+
+	shake_timer = TIME->Create(0);
 }
 
 void CamMgr::Update()
@@ -13,12 +15,12 @@ void CamMgr::Update()
 	Obj* player = OBJ->Find("player");
 	if (player)
 		pos = player->pos;
-	if (shake_timer)
-		if (!shake_timer->IsStop())
-		{
-			pos.x += float(RANDOM->INT(-shake_force, shake_force));
-			pos.y += float(RANDOM->INT(-shake_force, shake_force));
-		}
+
+	if (!shake_timer->IsStop())
+	{
+		pos.x += float(RANDOM->INT(-shake_force, shake_force));
+		pos.y += float(RANDOM->INT(-shake_force, shake_force));
+	}
 
 	M mPos, mScale, mRot;
 

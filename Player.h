@@ -7,11 +7,13 @@ class Player :
 public:
     Texture* img;
     Texture* bg;
+    DWORD* pixel;
     Texture* bg_lower;
     Timer* during;
     Obj* boss;
     V2 start;
     V2 last;
+    V2 temp_pos;
 
     D3DXCOLOR bg_color[CELLSIZE_X * CELLSIZE_Y];
 
@@ -41,14 +43,21 @@ public:
 
     void SetUp();
     void DrawLine();
+
     // 0 normal, 1 filled, 2 cancel
     void DrawArea(int draw_flag = 0);
+
     bool FloodFill(V2 pos, int target, int change);
     void AutoFill();
     void AddItem();
     void NoDamage();
     bool Near(KeyState dir, int target);
     int  Current();
+
+    void little_sleep(milliseconds us);
+    void Flash();
+    thread* flash_thread;
+    recursive_mutex mtx;
 
     // Obj을(를) 통해 상속됨
     virtual void Init() override;

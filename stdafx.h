@@ -11,8 +11,14 @@
 #include <functional>
 #include <functional>
 #include <mutex>
+#include <chrono>
 
 using namespace std;
+using namespace std::chrono;
+using std::chrono::duration_cast;
+using std::chrono::milliseconds;
+using std::chrono::seconds;
+using std::chrono::system_clock;
 using V3 = D3DXVECTOR3;
 using V2 = D3DXVECTOR2;
 using M = D3DXMATRIX;

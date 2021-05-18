@@ -168,9 +168,7 @@ void Player::Update()
 	if (INPUT->Down(VK_F6))
 		HOT->F6();
 	if (INPUT->Down('A'))
-	{
-		printf("fdjk");
-	}
+		CAM->Shake(1, 10);
 }
 
 void Player::Render()
@@ -191,15 +189,15 @@ void Player::Render()
 
 	img->Render(pos, ZERO, ONE / 4, atan2(dir.x, -dir.y));
 
-	char str[256];
-	sprintf(str, "%.2f%%", (double)coloring_per);
-	IMG->Write(str, { (float)L - 200, CENTER.y });
-	sprintf(str, "hp : %d", hp);
-	IMG->Write(str, { (float)L - 200, CENTER.y + 50 });
-	sprintf(str, "speed : %f", (double)speed);
-	IMG->Write(str, { (float)L - 200, CENTER.y + 100 });
-	sprintf(str, "def : %d", def);
-	IMG->Write(str, { (float)L - 200, CENTER.y + 150 });
+	char str1[256];
+	sprintf(str1, "%.2f%%", (double)coloring_per);
+	IMG->Write(str1, { (float)L - 200, CENTER.y });
+	sprintf(str1, "hp : %d", hp);
+	IMG->Write(str1, { (float)L - 200, CENTER.y + 50 });
+	sprintf(str1, "speed : %f", (double)speed);
+	IMG->Write(str1, { (float)L - 200, CENTER.y + 100 });
+	sprintf(str1, "def : %d", def);
+	IMG->Write(str1, { (float)L - 200, CENTER.y + 150 });
 }
 
 void Player::Release()
@@ -321,14 +319,13 @@ void Player::DrawArea(int draw_flag)
 		start = pos;
 		return;
 	}
-
 	draw_mode = false;
 
 	D3DLOCKED_RECT lr;
 
 	bg->p->LockRect(0, &lr, 0, D3DLOCK_DISCARD);
 
-	DWORD* pixel = (DWORD*)lr.pBits;
+	pixel = (DWORD*)lr.pBits;
 
 	for (int y = CELLSIZE_Y - 1; y != -1; --y)
 	{
@@ -341,7 +338,10 @@ void Player::DrawArea(int draw_flag)
 				change = D3DCOLOR_RGBA(0, 0, 0, 0);
 				cell[x][y] = 3;
 			}
-			if ((x == 0 || x == CELLSIZE_X - 1 || y == 0 || y == CELLSIZE_Y - 1) && (cell[x + 1][y] == 3 || cell[x - 1][y] == 3 || cell[x][y + 1] == 3 || cell[x][y - 1] == 3))
+			if ((x == 0 && cell[x + 1][y] == 3) ||
+				(x == CELLSIZE_X - 1 && cell[x - 1][y] == 3) ||
+				(y == 0 && cell[x][y + 1] == 3) ||
+				(y == CELLSIZE_Y - 1 && cell[x][y - 1] == 3))
 			{
 				change = D3DCOLOR_RGBA(0, 0, 0, 0);
 				cell[x][y] = 3;
@@ -349,6 +349,9 @@ void Player::DrawArea(int draw_flag)
 
 			switch (cell[x][y])
 			{
+			case -1:
+				change = D3DCOLOR_RGBA(255, 255, 255, 255);
+				break;
 			case 0:
 				change = bg_color[y * CELLSIZE_X + x];
 				break;
@@ -379,7 +382,6 @@ void Player::DrawArea(int draw_flag)
 
 	bg->p->UnlockRect(0);
 
-
 	char str[256];
 	int y = CELLSIZE_Y - 1;
 	int x = CELLSIZE_X - 1;
@@ -392,8 +394,11 @@ void Player::DrawArea(int draw_flag)
 
 bool Player::FloodFill(V2 pos, int target, int change)
 {
+	int pos_x = pos.x;
+	int pos_y = pos.y;
+
 	if (target == change) return true;
-	if (cell[(int)pos.x][(int)pos.y] != target) return true;
+	if (cell[pos_x][pos_y] != target) return true;
 	if (pos.x < 0 || pos.y < 0 || pos.x > CELLSIZE_X - 1 || pos.y > CELLSIZE_Y - 1) return true;
 
 	queue<V2> v2q;
@@ -404,7 +409,7 @@ bool Player::FloodFill(V2 pos, int target, int change)
 	if (change == 3)
 		add = true;
 
-	cell[(int)pos.x][(int)pos.y] = change;
+	cell[pos_x][pos_y] = change;
 
 	v2q.push(pos);
 
@@ -456,6 +461,9 @@ bool Player::FloodFill(V2 pos, int target, int change)
 	float temp1 = coloring_cells * 100;
 	coloring_per = temp1 / total_cell;
 
+	draw_mode = true;
+	DrawArea(1);
+
 	return true;
 }
 
@@ -466,7 +474,6 @@ void Player::AutoFill()
 	last = { 0,0 };
 
 	V2 value[4];
-
 	value[0] = { -1,-1 };
 	value[1] = { 1,1 };
 	value[2] = { -1,1 };
@@ -475,13 +482,17 @@ void Player::AutoFill()
 	bool isOk[4];
 
 	for (size_t i = 0; i < 4; i++)
-		isOk[i] = FloodFill({ pos.x - gap.x + value[i].x ,pos.y - gap.y + value[i].y }, 0, 100);
-
-	for (size_t i = 0; i < 4; i++)
+	{
+		temp_pos = { pos.x - gap.x + value[i].x ,pos.y - gap.y + value[i].y };
+		isOk[i] = FloodFill(temp_pos, 0, 100);
 		if (isOk[i])
-			FloodFill({ pos.x - gap.x + value[i].x ,pos.y - gap.y + value[i].y }, 100, 3);
+		{
+			//FloodFill(temp_pos, 100, 3);
+			flash_thread = new thread([&]()->void {Player::Flash(); });
+		}
 		else
-			FloodFill({ pos.x - gap.x + value[i].x ,pos.y - gap.y + value[i].y }, 100, 0);
+			FloodFill(temp_pos, 100, 0);
+	}
 
 	draw_mode = true;
 	DrawArea(1);
@@ -526,4 +537,28 @@ bool Player::Near(KeyState dir, int target)
 int Player::Current()
 {
 	return cell[int(pos.x - gap.x)][int(pos.y - gap.y)];
+}
+
+void Player::little_sleep(milliseconds us)
+{
+	auto start = high_resolution_clock::now();
+	auto end = start + us;
+	do {
+		this_thread::yield();
+	} while (high_resolution_clock::now() < end);
+}
+
+void Player::Flash()
+{
+	FloodFill(temp_pos, 100, 3);
+
+	little_sleep(milliseconds(1000));
+
+	for (size_t i = 0; i < 3; i++)
+	{
+		FloodFill(temp_pos, 3, -1);
+		little_sleep(milliseconds(1000));
+		FloodFill(temp_pos, -1, 3);
+		little_sleep(milliseconds(1000));
+	}
 }
