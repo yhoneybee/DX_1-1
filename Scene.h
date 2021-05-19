@@ -5,6 +5,8 @@ public:
 	Scene() { ; };
 	virtual ~Scene() { ; };
 
+	bool inited = false;
+
 	virtual void Init() PURE;
 	virtual void Update() PURE;
 	virtual void Render() PURE;

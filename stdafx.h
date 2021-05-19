@@ -9,7 +9,6 @@
 #include <cmath>
 #include <algorithm>
 #include <functional>
-#include <functional>
 #include <mutex>
 #include <chrono>
 #include <future>
@@ -40,7 +39,7 @@ const V2 gap = { (WINX - CELLSIZE_X) / 2 ,(WINY - CELLSIZE_Y) / 2 };
 const RECT ZERO = { 0,0,0,0 };
 const V2 ONE = { 1,1 };
 
-const bool DrawDebug = false;
+const bool DrawDebug = true;
 
 static bool WIN = true;
 static float time_scale = 1;
@@ -98,5 +97,6 @@ enum Tag
 #include "End.h"
 
 //OBJ
+#include "MiniMap.h"
 #include "Player.h"
 #include "Enemy.h"

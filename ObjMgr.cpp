@@ -105,9 +105,9 @@ Obj* ObjMgr::Add(Obj* p, const string& key)
 
 Obj* ObjMgr::Find(const string& key)
 {
-	for (auto& i : l_obj)
-		if (i->key == key)
-			return i;
+	for (auto i = l_obj.rbegin(); i != l_obj.rend(); ++i)
+		if ((*i)->key == key)
+			return (*i);
 	return nullptr;
 }
 
@@ -119,8 +119,8 @@ void ObjMgr::Clear()
 
 bool ObjMgr::MapOut(Obj* p)
 {
-	if (p)
-		return (p->pos.x < 0 || p->pos.x > WINX ||
-			p->pos.y < 0 || p->pos.y > WINY);
+	//if (p)
+	//	return (p->pos.x < 0 || p->pos.x > WINX ||
+	//		p->pos.y < 0 || p->pos.y > WINY);
 	return false;
 }

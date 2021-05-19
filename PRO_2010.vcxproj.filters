@@ -78,6 +78,9 @@
     <Filter Include="Mgr\ThreadPool">
       <UniqueIdentifier>{37c06712-dd0d-4088-8374-545a0713aed3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="CLASS\Gun">
+      <UniqueIdentifier>{d787d23b-0f25-4282-a97b-83cf0453f567}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXUT\Optional\directx.ico">
@@ -224,6 +227,12 @@
     <ClCompile Include="ThreadPool.cpp">
       <Filter>Mgr\ThreadPool</Filter>
     </ClCompile>
+    <ClCompile Include="MiniMap.cpp">
+      <Filter>Game\obj\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Gun.cpp">
+      <Filter>CLASS\Gun</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -313,6 +322,12 @@
     </ClInclude>
     <ClInclude Include="ThreadPool.h">
       <Filter>Mgr\ThreadPool</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniMap.h">
+      <Filter>Game\obj\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Gun.h">
+      <Filter>CLASS\Gun</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

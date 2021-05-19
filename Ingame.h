@@ -6,8 +6,6 @@ class Ingame :
 public:
     Ingame(int type);
 
-    Texture* bg;
-
     Texture* img;
 
     ScrollMap* map;

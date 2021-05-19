@@ -391,10 +391,12 @@
     <ClCompile Include="Effect.cpp" />
     <ClCompile Include="End.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="Gun.cpp" />
     <ClCompile Include="HotKey.cpp" />
     <ClCompile Include="Ingame.cpp" />
     <ClCompile Include="InputMgr.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RandomMgr.cpp" />
@@ -415,12 +417,14 @@
     <ClInclude Include="Effect.h" />
     <ClInclude Include="End.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="Gun.h" />
     <ClInclude Include="HotKey.h" />
     <ClInclude Include="ImgMgr.h" />
     <ClInclude Include="Ingame.h" />
     <ClInclude Include="InputMgr.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="MainGame.h" />
+    <ClInclude Include="MiniMap.h" />
     <ClInclude Include="Mouse.h" />
     <ClInclude Include="Obj.h" />
     <ClInclude Include="ObjMgr.h" />

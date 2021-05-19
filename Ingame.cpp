@@ -4,7 +4,7 @@
 extern int score;
 
 Ingame::Ingame(int type)
-	:bg(), map(), type(type)
+	:map(), type(type)
 {
 }
 

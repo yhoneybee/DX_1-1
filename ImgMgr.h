@@ -17,6 +17,7 @@ public:
 	~ImgMgr();
 
 	Texture* Add(const string& key);
+	Texture* ReLoad(const string& key);
 
 	void Begin();
 	void Render(Texture* p, V2 pos = CENTER, RECT rt = ZERO, V2 size = ONE, float rot = 0, float depth = 1, D3DXCOLOR color = D3DCOLOR_RGBA(255, 255, 255, 255), bool center = true);

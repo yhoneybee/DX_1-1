@@ -73,7 +73,27 @@ void Enemy::Init()
 void Enemy::Update()
 {
 	for (int i = 0; i < speed; i++)
+	{
 		pos += dir;
+
+		if (pos.x < L)
+			RANDOM->Reflex(&dir, V2(-1, 0));
+		if (pos.x > R)
+			RANDOM->Reflex(&dir, V2(1, 0));
+		if (pos.y < T)
+			RANDOM->Reflex(&dir, V2(0, -1));
+		if (pos.y > B)
+			RANDOM->Reflex(&dir, V2(0, 1));
+
+		if (Player::cell[int(pos.x) + 1][int(pos.y)] == 2)
+			RANDOM->Reflex(&dir, V2(1, 0));
+		if (Player::cell[int(pos.x) - 1][int(pos.y)] == 2)
+			RANDOM->Reflex(&dir, V2(-1, 0));
+		if (Player::cell[int(pos.x)][int(pos.y) + 1] == 2)
+			RANDOM->Reflex(&dir, V2(0, 1));
+		if (Player::cell[int(pos.x)][int(pos.y) - 1] == 2)
+			RANDOM->Reflex(&dir, V2(0, -1));
+	}
 
 	int range = 7;
 
@@ -122,10 +142,10 @@ void Enemy::Update()
 			return;
 		}
 
-	for (int y = -range; y <= range; y++)
-		for (int x = -range; x <= range; x++)
-			if (Player::cell[c.x + x >= CELLSIZE_X ? CELLSIZE_X - 1 : c.x + x][c.y + y >= CELLSIZE_Y ? CELLSIZE_Y - 1 : c.y + y] == 2)
-				dir = RANDOM->Vec2(pos);
+	//for (int y = -range; y <= range; y++)
+	//	for (int x = -range; x <= range; x++)
+	//		if (Player::cell[c.x + x >= CELLSIZE_X ? CELLSIZE_X - 1 : c.x + x][c.y + y >= CELLSIZE_Y ? CELLSIZE_Y - 1 : c.y + y] == 2)
+	//			dir = RANDOM->Vec2(pos);
 }
 
 void Enemy::Render()

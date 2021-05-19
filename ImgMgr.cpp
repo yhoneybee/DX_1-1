@@ -45,6 +45,18 @@ Texture* ImgMgr::Add(const string& key)
 	return f->second;
 }
 
+Texture* ImgMgr::ReLoad(const string& key)
+{
+	auto find = textures.find(key);
+	if (find != textures.end())
+	{
+		find->second->Release();
+		SAFE_DELETE(find->second);
+		textures.erase(find);
+	}
+	return IMG->Add(key);
+}
+
 void ImgMgr::Begin()
 {
 	sprite->Begin(1 << 4 | 1 << 2 | 1 << 6);

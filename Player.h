@@ -7,15 +7,11 @@ class Player :
 public:
     Texture* img;
     Texture* bg;
-    DWORD* pixel;
     Texture* bg_lower;
     Timer* during;
     Obj* boss;
     V2 start;
-    V2 last;
     V2 temp_pos;
-
-    D3DXCOLOR bg_color[CELLSIZE_X * CELLSIZE_Y];
 
     enum class KeyState
     {
@@ -41,27 +37,25 @@ public:
     bool draw_mode = false;
     bool no_damage = false;
 
-    void SetUp();
+    bool drawing = false;
 
-    DWORD* Pixel();
+    void SetUp();
 
     void DrawLine();
 
     // 0 normal, 1 filled, 2 cancel
-    void DrawArea(int draw_flag = 0, bool isFlashing = false);
+    void DrawArea(int draw_flag = 0);
 
     // 0 OK, 1 T == C, 2 CELL != T, 3 OUT OF RANGE, 4 BOSS
-    int FloodFill(V2 pos, int target, int change, bool isFlashing = false);
+    int FloodFill(V2 pos, int target, int change);
     void AutoFill();
     void AddItem();
     void NoDamage();
     bool Near(KeyState dir, int target);
     int  Current();
 
-    void little_sleep(milliseconds us);
-    void Flash(V2 v2);
-
-    ThreadPool* thread_pool;
+    //void little_sleep(milliseconds us);
+    //void Flash(V2 v2);
 
     // Obj을(를) 통해 상속됨
     virtual void Init() override;

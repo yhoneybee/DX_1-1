@@ -1,5 +1,6 @@
 #pragma once
 #include "Scene.h"
+
 class Title :
     public Scene
 {
@@ -12,6 +13,11 @@ public:
     float bolt_rot;
     V2 bolt_pos;
     V2 bolt_end_pos;
+
+    Timer* delay_up;
+    bool up;
+
+    bool is_pos_end = false;
 
     Texture* title;
     V2 title_pos;

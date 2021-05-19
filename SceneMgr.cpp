@@ -22,9 +22,12 @@ void SceneMgr::Set(const string& key)
 	if (f != scenes.end())
 	{
 		if (now)
+		{
 			now->Release();
-		now = f->second;
+			now->inited = false;
+		}
 		OBJ->Clear();
+		now = f->second;
 	}
 }
 
@@ -33,15 +36,16 @@ void SceneMgr::Update()
 	if (OBJ->l_obj.empty())
 	{
 		now->Init();
+		now->inited = true;
 		HOT->Reset();
 	}
 
-	if (now)
+	if (now->inited)
 		now->Update();
 }
 
 void SceneMgr::Render()
 {
-	if (now)
+	if (now->inited)
 		now->Render();
 }
