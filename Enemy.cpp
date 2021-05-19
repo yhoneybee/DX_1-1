@@ -14,11 +14,17 @@ void Enemy::Rush()
 	img = IMG->Add(str);
 }
 
-void Enemy::Shot(int shots)
+void Enemy::CircleShot(float angle, int shots)
 {
-	int angle = 360 / shots;
-	for (int i = 0; i < 360; i += angle)
-		OBJ->Add(new Bullet(1, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
+	float value = angle / shots;
+	float look = D3DXToDegree(atan2f(dir.x, -dir.y));
+	for (float i = look - (angle / 2) - 90; i <= look + (angle / 2) - 90; i += value)
+	{
+		OBJ->Add(new Bullet(BulletCase::SHURIKEN, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }, true), "Bullet")->pos = pos;
+		//OBJ->Add(new Bullet(BulletCase::CRICLE, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }, true), "Bullet")->pos = pos;
+		//OBJ->Add(new Bullet(BulletCase::HURRICANE, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }, true), "Bullet")->pos = pos;
+		OBJ->Add(new Bullet(BulletCase::CROSS, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }, true), "Bullet")->pos = pos;
+	}
 }
 
 void Enemy::Init()
@@ -60,7 +66,7 @@ void Enemy::Init()
 		speed = speeds[2];
 		break;
 	case 8:
-		cool = 3;
+		cool = 5;
 		speed = speeds[2];
 		break;
 	}
@@ -125,7 +131,7 @@ void Enemy::Update()
 		range = 110;
 		if (timer->IsStop())
 		{
-			Shot(36);
+			CircleShot(360, 36);
 			timer->Start();
 		}
 		break;

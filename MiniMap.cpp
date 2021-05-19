@@ -19,10 +19,6 @@ void MiniMap::Init()
 
 	DWORD* pixel = (DWORD*)lr.pBits;
 
-	for (int y = 90 - 1; y != -1; --y)
-		for (int x = 160 - 1; x != -1; --x)
-			minimap_color[y * 160 + x] = pixel[y * 160 + x];
-
 	minimap->p->UnlockRect(0);
 }
 
@@ -48,11 +44,13 @@ void MiniMap::Update()
 		{
 			D3DXCOLOR change = minimap_color[y * 160 + x];
 
-			if (Player::cell[int(x * 10)][int(y * 10)] == 3)
-				change = D3DXCOLOR(0, 0, 0, 0);
-
 			if (p_x != x && p_y != y && t_x != x && t_y != y && Player::cell[int(x * 10)][int(y * 10)] != 3)
-				change = D3DXCOLOR(0.3, 0.3, 0.3, 1);
+				change = D3DCOLOR_RGBA(0, 0, 0, 255);
+			else
+				change = D3DCOLOR_RGBA(150, 150, 150, 255);
+
+			if (Player::cell[int(x * 10)][int(y * 10)] == 3)
+				change = D3DXCOLOR(1, 1, 1, 1);
 
 			if (t_x == x)
 			{
@@ -95,8 +93,8 @@ void MiniMap::Update()
 
 void MiniMap::Render()
 {
-	minimap_bg->Render(pos, ZERO, ONE, 0, 0);
-	minimap->Render(pos, ZERO, ONE, 0, 0);
+	minimap_bg->Render({ pos.x + 22,pos.y }, ZERO, (ONE / 1.2) / 1.2, 0, 0);
+	minimap->Render(pos, ZERO, ONE / 1.2, 0, 0);
 }
 
 void MiniMap::Release()

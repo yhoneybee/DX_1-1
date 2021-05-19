@@ -18,6 +18,10 @@ void SceneMgr::Add(Scene* p, const string& key)
 
 void SceneMgr::Set(const string& key)
 {
+	if (key == "stage1")
+		round = 1;
+	if (key == "stage2")
+		round = 2;
 	auto f = scenes.find(key);
 	if (f != scenes.end())
 	{

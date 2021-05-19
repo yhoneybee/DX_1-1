@@ -1,59 +1,64 @@
 #include "DXUT.h"
 #include "Bullet.h"
 
-Bullet::Bullet(int type, V2 dir)
-	:type(type), dir(dir), speed(0)
+Bullet::Bullet(BulletCase gc, V2 dir, bool eatk)
+	:gc(gc), dir(dir), speed(0), eatk(eatk)
 {
 }
 
 void Bullet::Init()
 {
-	switch (type)
+	speed = 2;
+	delay = TIME->Create(0.5f);
+	main_col = new Col(this, (eatk ? EATK : PATK), 1);
+	switch (gc)
 	{
-	case 1:
-		img = IMG->Add("player");
-		speed = 2;
+	case CRICLE:
+		img = IMG->Add("/bullet/bullet_1");
+		break;
+	case SHURIKEN:
+		img = IMG->Add("/bullet/bullet_2");
+		break;
+	case HURRICANE:
+		img = IMG->Add("/bullet/bullet_3");
+		break;
+	case CROSS:
+		img = IMG->Add("/bullet/bullet_4");
+		break;
+	case BULB:
+		img = IMG->Add("/bullet/Player_bullet");
 		break;
 	}
-	main_col = new Col(this, EATK);
-	delay = TIME->Create(0.5f);
-	delay->Start();
+	rot = atan2(dir.x, -dir.y);
 }
 
 void Bullet::Update()
 {
+	pos += dir * speed;
+
 	if (delay->IsStop())
 	{
-		fxs.emplace_back(new Effect(img, pos, 0, 3));
+		fxs.emplace_back(new Effect(img, pos, rot, 3));
 		delay->Start();
 	}
 
-	pos += dir * speed;
-	main_col->Set(pos, 15, 15);
+	main_col->Set(pos, 20, 20);
 
-	int range = 3;
 	POINT c = { trunc(pos.x), trunc(pos.y) };
 
-	if (Player::cell[c.x][c.y] == 3)
-		if (type < 7)
-		{
-			flag = true;
-			return;
-		}
+	if (Player::cell[int(c.x)][int(c.y)] == 3)
+		flag = true;
 
-	for (int y = -range; y <= range; y++)
-		for (int x = -range; x <= range; x++)
-			if (Player::cell[int(c.x) + x][int(c.y) + y] == 3)
-				flag = true;
 	if (pos.x < L || R < pos.x || pos.y < T || B < pos.y)
 		flag = true;
 }
 
 void Bullet::Render()
 {
+	main_col->Draw();
 	for (auto& i : fxs)
 		i->Render();
-	img->Render(pos, { 0,0,0,0 }, ONE, 0, 0, D3DCOLOR_RGBA(255, 0, 0, 255));
+	img->Render(pos, { 0,0,0,0 }, ONE, rot += DT * 2, 0, D3DCOLOR_RGBA(255, 255, 255, 255));
 }
 
 void Bullet::Release()

@@ -4,16 +4,16 @@
 Col::Col(Obj* p, Tag tag, int damage)
 	:owner(p),tag(tag),damage(damage)
 {
-	D3DXCreateLine(DEVICE, &line);
-	line->SetAntialias(true);
-	line->SetWidth(1);
+	//D3DXCreateLine(DEVICE, &line);
+	//line->SetAntialias(true);
+	//line->SetWidth(1);
 	OBJ->Add(this);
 }
 
 Col::~Col()
 {
 	OBJ->l_col.remove(this);
-	line->Release();
+	//line->Release();
 }
 
 void Col::Set(V2 pos, float w, float h)

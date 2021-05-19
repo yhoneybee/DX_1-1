@@ -10,12 +10,8 @@ Effect::Effect(Texture* fx, V2 pos, int rot, int flag)
 
 void Effect::Render()
 {
-	if (alpha <= 0 || size.x <= 0 || size.y <= 0)
-	{
-		alpha = 0;
-		size = { 0,0 };
+	if (IsFinished())
 		return;
-	}
 
 	if (delay->IsStop())
 	{
@@ -40,4 +36,10 @@ void Effect::Render()
 	}
 
 	fx->Render(pos, { 0,0,0,0 }, size, rot, 0, D3DCOLOR_RGBA(255, 255, 255, alpha));
+}
+
+bool Effect::IsFinished()
+{
+	if (alpha <= 0 || size.x <= 0 || size.y <= 0) return true;
+	return false;
 }

@@ -4,15 +4,18 @@ class Bullet :
     public Obj
 {
 public:
-    Bullet(int type, V2 dir);
+    Bullet(BulletCase gc, V2 dir, bool eatk = false);
 
     Texture* img;
     vector<Effect*> fxs;
     Timer* delay;
     V2 dir;
 
-    int type;
+    BulletCase gc;
     float speed;
+    float rot;
+
+    bool eatk;
 
     // Obj을(를) 통해 상속됨
     virtual void Init() override;

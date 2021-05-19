@@ -8,6 +8,9 @@ End::End(int type)
 
 void End::Init()
 {
+	CAM->pos = CENTER;
+	CAM->scale = { 1,1,1 };
+
 	OBJ->Add(new Mouse, "Mouse");
 
 	map = new ScrollMap(IMG->Add("Bg"));

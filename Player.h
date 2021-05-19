@@ -12,6 +12,7 @@ public:
     Obj* boss;
     V2 start;
     V2 temp_pos;
+    V2 dir;
 
     enum class KeyState
     {
@@ -26,6 +27,8 @@ public:
     static int cell[CELLSIZE_X][CELLSIZE_Y];
     static float coloring_per;
 
+    D3DXCOLOR bg_color[CELLSIZE_X][CELLSIZE_Y];
+
     int total_cell = CELLSIZE_X * CELLSIZE_Y;
     int coloring_cells = 0;
     int temp = 0;
@@ -33,6 +36,8 @@ public:
     int def = 0;
 
     float rot;
+
+    float time = 100;
 
     bool draw_mode = false;
     bool no_damage = false;
@@ -56,6 +61,10 @@ public:
 
     //void little_sleep(milliseconds us);
     //void Flash(V2 v2);
+
+    Gun* gun;
+
+    int Nums(int num, int index);
 
     // Obj을(를) 통해 상속됨
     virtual void Init() override;

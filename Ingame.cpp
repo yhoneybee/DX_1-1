@@ -10,6 +10,9 @@ Ingame::Ingame(int type)
 
 void Ingame::Init()
 {
+	CAM->pos = CENTER;
+	CAM->scale = { 1,1,1 };
+
 	OBJ->Add(new Mouse, "Mouse");
 
 	switch (type)

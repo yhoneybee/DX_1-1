@@ -1,6 +1,7 @@
 #include "DXUT.h"
 #include "Button.h"
 
+// 버튼의 사진, 버튼의 위치, 버튼에 띄우는 사진, 버튼 Col w, h, 사진의 depth, 버튼 누르면 실행될 람다 함수
 Button::Button(Texture* bg, V2 pos, const string& text, float w, float h, float depth, function<void()> func)
 	:bg(bg), text(text), func(func), depth(depth), isOn(true)
 {

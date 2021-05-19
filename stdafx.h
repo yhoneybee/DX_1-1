@@ -39,7 +39,7 @@ const V2 gap = { (WINX - CELLSIZE_X) / 2 ,(WINY - CELLSIZE_Y) / 2 };
 const RECT ZERO = { 0,0,0,0 };
 const V2 ONE = { 1,1 };
 
-const bool DrawDebug = true;
+const bool DrawDebug = false;
 
 static bool WIN = true;
 static float time_scale = 1;
@@ -57,6 +57,15 @@ enum Tag
 	OBS,
 	ITEM,
 	TAG_END,
+};
+
+enum BulletCase
+{
+	CRICLE,
+	SHURIKEN,
+	HURRICANE,
+	CROSS,
+	BULB,
 };
 
 #define DEVICE DXUTGetD3D9Device()
@@ -84,6 +93,7 @@ enum Tag
 #include "Item.h"
 #include "Effect.h"
 #include "ScrollMap.h"
+#include "Gun.h"
 #include "Bullet.h"
 
 //UI

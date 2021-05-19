@@ -13,6 +13,8 @@ public:
     void Update();
     void Render();
 
+    int round = 0;
+
     map<string, Scene*> scenes;
     Scene* now = nullptr;
 };

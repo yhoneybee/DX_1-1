@@ -6,6 +6,86 @@ extern float time_scale;
 int Player::cell[CELLSIZE_X][CELLSIZE_Y] = { 0, };
 float Player::coloring_per = 0;
 
+//void Player::Fire(V2 start_pos, int bullet_pattern, int bullet_count)
+//{
+//	int angle = 0;
+//
+//	int forword = -90;
+//	int right = 0;
+//	int left = 180;
+//	int back = 90;
+//	float look = D3DXToDegree(atan2f(dir.x, -dir.y));
+//
+//	switch (bullet_pattern)
+//	{
+//	case 1:
+//	{
+//		angle = 360;
+//		float value = angle / bullet_count;
+//		for (float i = look - (angle / 2) + forword; i <= look + (angle / 2) + forword; i += value)
+//		{
+//			//OBJ->Add(new Bullet(BulletCase::SHURIKEN, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
+//			OBJ->Add(new Bullet(BulletCase::CRICLE, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
+//			OBJ->Add(new Bullet(BulletCase::HURRICANE, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
+//			//OBJ->Add(new Bullet(BulletCase::CROSS, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
+//		}
+//	}
+//	break;
+//	case 2:
+//	{
+//		angle = 270;
+//		float value = angle / bullet_count;
+//		for (float i = look - (angle / 2) + right; i <= look + (angle / 2) + right; i += value)
+//		{
+//			OBJ->Add(new Bullet(BulletCase::SHURIKEN, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
+//			//OBJ->Add(new Bullet(BulletCase::CRICLE, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
+//			OBJ->Add(new Bullet(BulletCase::HURRICANE, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
+//			//OBJ->Add(new Bullet(BulletCase::CROSS, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
+//		}
+//	}
+//	break;
+//	case 3:
+//	{
+//		angle = 180;
+//		float value = angle / bullet_count;
+//		for (float i = look - (angle / 2) + left; i <= look + (angle / 2) + left; i += value)
+//		{
+//			//OBJ->Add(new Bullet(BulletCase::SHURIKEN, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
+//			OBJ->Add(new Bullet(BulletCase::CRICLE, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
+//			//OBJ->Add(new Bullet(BulletCase::HURRICANE, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
+//			OBJ->Add(new Bullet(BulletCase::CROSS, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
+//		}
+//	}
+//	break;
+//	case 4:
+//	{
+//		angle = 90;
+//		float value = angle / bullet_count;
+//		for (float i = look - (angle / 2) + back; i <= look + (angle / 2) + back; i += value)
+//		{
+//			OBJ->Add(new Bullet(BulletCase::SHURIKEN, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
+//			//OBJ->Add(new Bullet(BulletCase::CRICLE, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
+//			//OBJ->Add(new Bullet(BulletCase::HURRICANE, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
+//			OBJ->Add(new Bullet(BulletCase::CROSS, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
+//		}
+//	}
+//	break;
+//	}
+//}
+
+int Player::Nums(int num, int index)
+{
+	vector<int> nums;
+
+	while (num != 0)
+	{
+		nums.emplace_back(num % 10);
+		num /= 10;
+	}
+
+	return nums.size() <= index ? 0 : nums[index];
+}
+
 void Player::Init()
 {
 	boss = OBJ->Find("boss");
@@ -14,6 +94,20 @@ void Player::Init()
 	img = IMG->Add("player");
 
 	OBJ->Add(new MiniMap, "minimap");
+
+	gun = new Gun();
+
+	memset(bg_color, D3DXCOLOR(0, 0, 0, 0), sizeof(bg_color));
+
+	D3DLOCKED_RECT lr;
+	bg->p->LockRect(0, &lr, 0, D3DLOCK_DISCARD);
+	DWORD* pixel = (DWORD*)lr.pBits;
+
+	for (int y = CELLSIZE_Y - 1; y != -1; --y)
+		for (int x = CELLSIZE_X - 1; x != -1; --x)
+			bg_color[x][y] = pixel[y * CELLSIZE_X + x];
+
+	bg->p->UnlockRect(0);
 
 	SetUp();
 
@@ -27,11 +121,12 @@ void Player::Init()
 	draw_mode = false;
 	no_damage = false;
 
-	CAM->scale = { 1.5,1.5,2 };
+	CAM->scale = { 1.5,1.5,1.5 };
 }
 
 void Player::Update()
 {
+	time -= DT;
 	if (hp <= 0) SCENE->Set("fail");
 
 	main_col->Set(pos, 5, 5);
@@ -114,19 +209,22 @@ void Player::Update()
 
 	if (INPUT->Down('Z'))
 	{
-		CAM->Shake(0.1f, 1);
+		CAM->Shake(0.1f, 2);
+		gun->SetPostiton(pos);
+		gun->SetAngle(180);
+		gun->SetCount(30);
+		gun->SetDir(dir);
+		gun->AddBullet(BulletCase::CROSS);
+		gun->Fire();
 	}
 	if (INPUT->Down('X'))
 	{
-
 	}
 	if (INPUT->Down('C'))
 	{
-
 	}
 	if (INPUT->Down('V'))
 	{
-
 	}
 }
 
@@ -135,8 +233,6 @@ void Player::Render()
 	main_col->Draw();
 	bg_lower->Render();
 	bg->Render(CENTER, ZERO, ONE, 0, 1, D3DCOLOR_RGBA(255, 255, 255, 255));
-
-	V2 dir;
 
 	switch (key)
 	{
@@ -148,15 +244,43 @@ void Player::Render()
 
 	img->Render(pos, ZERO, ONE / 4, atan2(dir.x, -dir.y));
 
-	char str1[256];
-	sprintf(str1, "%.2f%%", (double)coloring_per);
-	IMG->Write(str1, { pos.x - 425 - 10,pos.y - 200 + 100 }, 10);
-	sprintf(str1, "hp : %d", hp);
-	IMG->Write(str1, { pos.x - 425 - 10,pos.y - 200 + 120 }, 10);
-	sprintf(str1, "speed : %.2f", (double)speed);
-	IMG->Write(str1, { pos.x - 425 - 20,pos.y - 200 + 140 }, 10);
+	//char str1[256];
+	//sprintf(str1, "%.2f%%", (double)coloring_per);
+	//IMG->Write(str1, { pos.x - 425 - 10,pos.y - 200 + 100 }, 10);
+	//sprintf(str1, "hp : %d", hp);
+	//IMG->Write(str1, { pos.x - 425 - 10,pos.y - 200 + 120 }, 10);
+	//sprintf(str1, "speed : %.2f", (double)speed);
+	//IMG->Write(str1, { pos.x - 425 - 20,pos.y - 200 + 140 }, 10);
 	//sprintf(str1, "def : %d", def); 아마도 무기 장착 뜰것같음
 	//IMG->Write(str1, { pos.x - 425 - 15,pos.y - 200 + 160 }, 10);
+
+	char str[256];
+	IMG->Add("Round_Text")->Render({ pos.x + 395,pos.y + 200 });
+	sprintf(str, "number/%d", SCENE->round);
+	IMG->Add(str)->Render({ pos.x + 480,pos.y + 175 });
+	IMG->Add("bar")->Render({ pos.x + 415,pos.y + 230 });
+	IMG->Add("persent")->Render({ pos.x + 475,pos.y + 260 });
+
+	sprintf(str, "number/%d", Nums(int(coloring_per), 2));
+	IMG->Add(str)->Render({ pos.x + 339,pos.y + 260 }, ZERO, ONE / 2.3);
+	sprintf(str, "number/%d", Nums(int(coloring_per), 1));
+	IMG->Add(str)->Render({ pos.x + 364,pos.y + 260 }, ZERO, ONE / 2.3);
+	sprintf(str, "number/%d", Nums(int(coloring_per), 0));
+	IMG->Add(str)->Render({ pos.x + 389,pos.y + 260 }, ZERO, ONE / 2.3);
+
+	IMG->Add("number/dot")->Render({ pos.x + 407,pos.y + 275 }, ZERO, ONE / 2.3);
+
+	sprintf(str, "number/%d", Nums(int(coloring_per * 10), 0));
+	IMG->Add(str)->Render({ pos.x + 425,pos.y + 260 }, ZERO, ONE / 2.3);
+
+	IMG->Add("Time_Text")->Render({ pos.x + 475,pos.y - 260 });
+	IMG->Add("bar")->Render({ pos.x + 450,pos.y - 240 });
+	sprintf(str, "number/%d", Nums(int(time), 0));
+	IMG->Add(str)->Render({ pos.x + 500,pos.y - 200 }, ZERO, ONE / 1.5);
+	sprintf(str, "number/%d", Nums(int(time), 1));
+	IMG->Add(str)->Render({ pos.x + 465,pos.y - 200 }, ZERO, ONE / 1.5);
+	sprintf(str, "number/%d", Nums(int(time), 2));
+	IMG->Add(str)->Render({ pos.x + 430,pos.y - 200 }, ZERO, ONE / 1.5);
 }
 
 void Player::Release()
@@ -172,7 +296,6 @@ void Player::Enter(Col* p)
 		if (Current() == 1 || Current() == 0)
 		{
 			hp--;
-			speed *= 2;
 			pos = start;
 			DrawArea(2);
 		}
@@ -292,7 +415,7 @@ void Player::DrawArea(int draw_flag)
 			case 1:
 				if (draw_flag == 2)
 				{
-					change = pixel[y * CELLSIZE_X + x];
+					change = bg_color[x][y];
 					cell[x][y] = 0;
 					break;
 				}
@@ -336,8 +459,7 @@ int Player::FloodFill(V2 pos, int target, int change)
 		add = true;
 
 	cell[int(pos.x)][int(pos.x)] = change;
-	if (add)
-		temp++;
+	if (add) temp++;
 
 	v2q.push(pos);
 
@@ -352,29 +474,25 @@ int Player::FloodFill(V2 pos, int target, int change)
 		if (cell[(int)n.x - 1][(int)n.y] == target)
 		{
 			cell[(int)n.x - 1][(int)n.y] = change;
-			if (add)
-				temp++;
+			if (add) temp++;
 			v2q.push({ n.x - 1, n.y });
 		}
 		if (cell[(int)n.x + 1][(int)n.y] == target)
 		{
 			cell[(int)n.x + 1][(int)n.y] = change;
-			if (add)
-				temp++;
+			if (add) temp++;
 			v2q.push({ n.x + 1, n.y });
 		}
 		if (cell[(int)n.x][(int)n.y - 1] == target)
 		{
 			cell[(int)n.x][(int)n.y - 1] = change;
-			if (add)
-				temp++;
+			if (add) temp++;
 			v2q.push({ n.x, n.y - 1 });
 		}
 		if (cell[(int)n.x][(int)n.y + 1] == target)
 		{
 			cell[(int)n.x][(int)n.y + 1] = change;
-			if (add)
-				temp++;
+			if (add) temp++;
 			v2q.push({ n.x, n.y + 1 });
 		}
 	}
