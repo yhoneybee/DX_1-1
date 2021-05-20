@@ -122,6 +122,8 @@ void Player::Init()
 	no_damage = false;
 
 	CAM->scale = { 1.5,1.5,1.5 };
+
+	gun->SetDir(&dir);
 }
 
 void Player::Update()
@@ -145,7 +147,9 @@ void Player::Update()
 			rot = 0;
 	}
 
-	if (INPUT->Down(VK_SPACE)) drawing = !drawing;
+	if (INPUT->Down(VK_SPACE))
+		if (Current() == 2)
+			drawing = !drawing;
 
 	if (INPUT->Press(VK_UP))
 	{
@@ -211,10 +215,9 @@ void Player::Update()
 	{
 		CAM->Shake(0.1f, 2);
 		gun->SetPostiton(pos);
-		gun->SetAngle(180);
-		gun->SetCount(30);
-		gun->SetDir(dir);
-		gun->AddBullet(BulletCase::CROSS);
+		gun->SetAngle(1);
+		gun->SetCount(1);
+		gun->SetBullet({ BulletCase::CROSS,BulletCase::CRICLE,BulletCase::HURRICANE });
 		gun->Fire();
 	}
 	if (INPUT->Down('X'))
@@ -265,12 +268,14 @@ void Player::Render()
 	IMG->Add(str)->Render({ pos.x + 339,pos.y + 260 }, ZERO, ONE / 2.3);
 	sprintf(str, "number/%d", Nums(int(coloring_per), 1));
 	IMG->Add(str)->Render({ pos.x + 364,pos.y + 260 }, ZERO, ONE / 2.3);
-	sprintf(str, "number/%d", Nums(int(coloring_per), 0));
-	IMG->Add(str)->Render({ pos.x + 389,pos.y + 260 }, ZERO, ONE / 2.3);
 
-	IMG->Add("number/dot")->Render({ pos.x + 407,pos.y + 275 }, ZERO, ONE / 2.3);
+	//{ pos.x + 407,pos.y + 275 }
+	IMG->Add("number/dot")->Render({ pos.x + 381,pos.y + 275 }, ZERO, ONE / 2.3);
 
 	sprintf(str, "number/%d", Nums(int(coloring_per * 10), 0));
+	IMG->Add(str)->Render({ pos.x + 400,pos.y + 260 }, ZERO, ONE / 2.3);
+
+	sprintf(str, "number/%d", Nums(int(coloring_per * 100), 0));
 	IMG->Add(str)->Render({ pos.x + 425,pos.y + 260 }, ZERO, ONE / 2.3);
 
 	IMG->Add("Time_Text")->Render({ pos.x + 475,pos.y - 260 });
@@ -286,6 +291,7 @@ void Player::Render()
 void Player::Release()
 {
 	SAFE_DELETE(main_col);
+	SAFE_DELETE(gun);
 }
 
 void Player::Enter(Col* p)

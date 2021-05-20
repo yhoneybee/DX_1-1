@@ -16,10 +16,10 @@ void Gun::SetCount(int count)
 	this->count = count;
 }
 
-void Gun::SetDir(V2 dir)
+void Gun::SetDir(V2* dir)
 {
 	this->dir = dir;
-	look = D3DXToDegree(atan2f(dir.x, -dir.y));
+	look = D3DXToDegree(atan2f((*dir).x, -(*dir).y));
 }
 
 void Gun::SetPattern(int pattern)
@@ -27,9 +27,9 @@ void Gun::SetPattern(int pattern)
 	this->pattern = pattern;
 }
 
-void Gun::AddBullet(BulletCase bc)
+void Gun::SetBullet(list<BulletCase> bcs)
 {
-	bcs.emplace_back(bc);
+	this->bcs = move(bcs);
 }
 
 void Gun::Fire()
@@ -46,14 +46,9 @@ void Gun::Fire()
 
 	float value = angle / count;
 
-	int lookat = 0;
+	int lookat = ((*dir).x == 0 ? ((*dir).y < 0 ? B : F) : ((*dir).x < 0 ? R : L));
 
-	if (dir == V2(0, -1)) lookat = F;
-	if (dir == V2(0, 1)) lookat = B;
-	if (dir == V2(-1, 0)) lookat = L;
-	if (dir == V2(1, 0)) lookat = R;
-
-	for (float i = look - (angle / 2) + lookat; i <= look + (angle / 2) + lookat; i += value)
+	for (float i = look - (angle / 2) + lookat; i < look + (angle / 2) + lookat; i += value)
 		for (auto& bc : bcs)
 			OBJ->Add(new Bullet(bc, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
 }
