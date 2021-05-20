@@ -116,8 +116,9 @@ void Player::Init()
 
 	speed = 3;
 	rot = 0;
-	hp = 5;
+	hp = 1;
 	def = 0;
+	title_a = 255;
 	draw_mode = false;
 	no_damage = false;
 
@@ -129,6 +130,7 @@ void Player::Init()
 void Player::Update()
 {
 	time -= DT;
+	if (time < 0) SCENE->Set("fail");
 	if (hp <= 0) SCENE->Set("fail");
 
 	main_col->Set(pos, 5, 5);
@@ -213,21 +215,17 @@ void Player::Update()
 
 	if (INPUT->Down('Z'))
 	{
-		CAM->Shake(0.1f, 2);
-		gun->SetPostiton(pos);
-		gun->SetAngle(1);
-		gun->SetCount(1);
-		gun->SetBullet({ BulletCase::CROSS,BulletCase::CRICLE,BulletCase::HURRICANE });
-		gun->Fire();
+		gun->pattern = gun->pattern - 1 < 1 ? 1 : gun->pattern - 1;
 	}
 	if (INPUT->Down('X'))
 	{
+		CAM->Shake(0.1f, 2);
+		gun->SetPostiton(pos);
+		gun->PatternStart();
 	}
 	if (INPUT->Down('C'))
 	{
-	}
-	if (INPUT->Down('V'))
-	{
+		gun->pattern = gun->pattern + 1 > gun->GetMaxPattern() ? gun->GetMaxPattern() : gun->pattern + 1;
 	}
 }
 
@@ -257,19 +255,34 @@ void Player::Render()
 	//sprintf(str1, "def : %d", def); 아마도 무기 장착 뜰것같음
 	//IMG->Write(str1, { pos.x - 425 - 15,pos.y - 200 + 160 }, 10);
 
+	IMG->Add("Start_BG")->Render(pos, ZERO, ONE, 0, 1, D3DCOLOR_RGBA(255, 255, 255, title_a));
+	IMG->Add("Start_title")->Render(pos, ZERO, ONE, 0, 1, D3DCOLOR_RGBA(255, 255, 255, title_a));
+
+	title_a = (title_a - 10 < 0 ? 0 : title_a - 10);
+
+	if (title_a > 0)
+		return;
+
 	char str[256];
+	//-409 : -3
+	// 1 : 99 = -406 : 0
+	// 0 : 100 = -407 : 1
+	int value = 408 * (coloring_per / 100);
+	IMG->Add("gage_infill")->Render({ pos.x - 15,pos.y - 222 }, { -LONG(415 / 2),-LONG(47 / 2),LONG(415 / 2) - 410 + value,LONG(47 / 2) }, ONE, 0, 0);
+	IMG->Add("gage")->Render({ pos.x,pos.y - 250 }, ZERO, ONE, 0, 0);
+	IMG->Add("tik")->Render({ pos.x - 14.5f + (LONG(415 / 2) - 410 + value),pos.y - 200 }, ZERO, ONE, 0, 0);
+
 	IMG->Add("Round_Text")->Render({ pos.x + 395,pos.y + 200 });
 	sprintf(str, "number/%d", SCENE->round);
 	IMG->Add(str)->Render({ pos.x + 480,pos.y + 175 });
 	IMG->Add("bar")->Render({ pos.x + 415,pos.y + 230 });
 	IMG->Add("persent")->Render({ pos.x + 475,pos.y + 260 });
 
-	sprintf(str, "number/%d", Nums(int(coloring_per), 2));
-	IMG->Add(str)->Render({ pos.x + 339,pos.y + 260 }, ZERO, ONE / 2.3);
 	sprintf(str, "number/%d", Nums(int(coloring_per), 1));
+	IMG->Add(str)->Render({ pos.x + 339,pos.y + 260 }, ZERO, ONE / 2.3);
+	sprintf(str, "number/%d", Nums(int(coloring_per), 0));
 	IMG->Add(str)->Render({ pos.x + 364,pos.y + 260 }, ZERO, ONE / 2.3);
 
-	//{ pos.x + 407,pos.y + 275 }
 	IMG->Add("number/dot")->Render({ pos.x + 381,pos.y + 275 }, ZERO, ONE / 2.3);
 
 	sprintf(str, "number/%d", Nums(int(coloring_per * 10), 0));

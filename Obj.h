@@ -11,7 +11,7 @@ public:
 	string key = "";
 	int hp = 0;
 	int max_hp = 0;
-	float speed = 0;
+	int speed = 0;
 	bool flag = false;
 
 	virtual void Init() PURE;

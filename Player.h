@@ -66,6 +66,8 @@ public:
 
     int Nums(int num, int index);
 
+    int title_a;
+
     // Obj을(를) 통해 상속됨
     virtual void Init() override;
     virtual void Update() override;

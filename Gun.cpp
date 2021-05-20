@@ -27,6 +27,23 @@ void Gun::SetPattern(int pattern)
 	this->pattern = pattern;
 }
 
+void Gun::PatternStart()
+{
+	switch (pattern)
+	{
+	case 1:
+	{
+		// 정면 45도 각으로 10발 CRICLE -> SHURIKEN -> CROSS 순으로 총알 생성
+		// 부채꼴
+		SetAngle(45);
+		SetCount(10);
+		SetBullet({ BulletCase::CRICLE,BulletCase::SHURIKEN,BulletCase::CROSS });
+		Fire();
+	}
+	break;
+	}
+}
+
 void Gun::SetBullet(list<BulletCase> bcs)
 {
 	this->bcs = move(bcs);
