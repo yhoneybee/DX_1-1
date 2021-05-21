@@ -37,7 +37,7 @@ void Gun::PatternStart()
 		// ∫Œ√§≤√
 		SetAngle(45);
 		SetCount(10);
-		SetBullet({ BulletCase::CRICLE,BulletCase::SHURIKEN,BulletCase::CROSS });
+		SetBullet({ BulletCase::HURRICANE,BulletCase::CROSS,BulletCase::SHURIKEN });
 		Fire();
 	}
 	break;

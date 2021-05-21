@@ -17,15 +17,6 @@ public:
     int type;
     int spin_force;
 
-    vector<float> speeds = vector<float>
-    {
-        0.5f,
-        0.75f,
-        1,
-        1.25f,
-        1.5f,
-    };
-
     void Rush();
     void CircleShot(float angle, int shots);
 

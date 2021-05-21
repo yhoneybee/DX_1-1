@@ -39,35 +39,29 @@ void Enemy::Init()
 	spin_force = 0;
 	main_col = new Col(this, EATK);
 
+	speed = 1;
+
 	switch (type)
 	{
 	case 1:
 		cool = 5;
-		speed = speeds[2];
 		break;
 	case 2:
-		speed = speeds[1];
 		break;
 	case 3:
-		speed = speeds[3];
 		break;
 	case 4:
 		cool = 3;
-		speed = speeds[3];
 		break;
 	case 5:
-		speed = speeds[4];
 		break;
 	case 6:
-		speed = speeds[0];
 		break;
 	case 7:
 		cool = 10;
-		speed = speeds[2];
 		break;
 	case 8:
 		cool = 5;
-		speed = speeds[2];
 		break;
 	}
 
@@ -120,10 +114,11 @@ void Enemy::Update()
 			char str[256];
 			sprintf(str, "enemy%d", type);
 			img = IMG->Add(str);
+			speed = 1;
 		}
 		else
 		{
-			pos += dir * 10;
+			speed = 10;
 			fxs.emplace_back(new Effect(img, pos, 0, 3));
 		}
 		break;
