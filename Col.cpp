@@ -37,7 +37,7 @@ void Col::Draw()
 		vs[4] = { float(left),float(top) };
 
 		line->Begin();
-		line->Draw(vs, 5, D3DCOLOR_RGBA(0, 255, 0, 255));
+		line->Draw(vs, 5, D3DCOLOR_RGBA(0, 0, 255, 255));
 		line->End();
 
 		SAFE_DELETE_ARRAY(vs);
