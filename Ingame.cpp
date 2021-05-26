@@ -3,6 +3,8 @@
 
 extern int score;
 
+list<Enemy*> Ingame::enemys;
+
 Ingame::Ingame(int type)
 	:map(), type(type)
 {
@@ -20,10 +22,17 @@ void Ingame::Init()
 	case 1:
 		Player::coloring_per = 0;
 		OBJ->Add(new Enemy(7), "boss")->pos = CENTER;
+		for (size_t i = 0; i < enemy_count; i++)
+		{
+			Enemy* enemy = new Enemy(RANDOM->INT(1, 2));
+			OBJ->Add(enemy, "enemy")->pos = { (float)RANDOM->INT(0, WINX), (float)RANDOM->INT(0, WINY) };
+			enemys.emplace_back(enemy);
+		}
 		score = 0;
 		break;
 	case 2:
 		Player::coloring_per = 0;
+		enemys.clear();
 		OBJ->Add(new Enemy(8), "boss")->pos = CENTER;
 	}
 	OBJ->Add(new Player, "player")->pos = { CENTER.x,float(B) };

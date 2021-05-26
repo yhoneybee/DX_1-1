@@ -49,6 +49,10 @@ void MiniMap::Update()
 			else
 				change = D3DCOLOR_RGBA(150, 150, 150, 255);
 
+			for (auto& obj : Ingame::enemys)
+				if (x == int(obj->pos.x / 10) && y == int(obj->pos.y / 10))
+					change = D3DXCOLOR(1, 0.5, 0, 1);
+
 			if (Player::cell[int(x * 10)][int(y * 10)] == 3)
 				change = D3DXCOLOR(1, 1, 1, 1);
 

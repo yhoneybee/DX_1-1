@@ -1,5 +1,8 @@
 #pragma once
 #include "Scene.h"
+
+class Enemy;
+
 class Ingame :
     public Scene
 {
@@ -9,6 +12,8 @@ public:
     Texture* img;
 
     ScrollMap* map;
+
+    static list<Enemy*> enemys;
 
     int type;
     int enemy_count = 30;
