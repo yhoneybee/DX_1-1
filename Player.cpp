@@ -88,6 +88,10 @@ int Player::Nums(int num, int index)
 
 void Player::Init()
 {
+	CAM->followable = true;
+	CAM->Reset();
+	CAM->scale = { 1.5,1.5,1.5 };
+
 	idle = ANIM->Add("player_idle", 30);
 	idle->Start();
 	boss = OBJ->Find("boss");
@@ -123,8 +127,6 @@ void Player::Init()
 	title_a = 255;
 	draw_mode = false;
 	no_damage = false;
-
-	CAM->scale = { 1.5,1.5,1.5 };
 
 	gun->SetDir(&dir);
 }
