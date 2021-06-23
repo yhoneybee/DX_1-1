@@ -6,45 +6,6 @@ void Texture::Render(V2 pos, RECT rt, V2 size, float rot, float depth, D3DXCOLOR
 	IMG->Render(this, pos, rt, size, rot, depth, color, center);
 }
 
-Anim::Anim(const string& name, float fps)
-	: fps(fps)
-{
-	anim_timer = TIME->Create(1 / fps);
-
-	int index = -1;
-
-	char str_index[256];
-	char str_name[256];
-
-	Texture* temp;
-
-	sprintf(str_name, "anim/%s", name.c_str());
-
-	do
-	{
-		++index;
-		sprintf(str_index, "(%d)", index);
-
-		temp = IMG->Add(str_index, str_name);
-
-		if (temp == nullptr)
-			break;
-
-		anim.emplace_back(temp);
-	} while (1);
-
-	sprintf(str_index, "%s anim count : %d\n", name.c_str(), anim.size());
-	OutputDebugStringA(str_index);
-}
-
-void Anim::Render(bool isLoop, V2 pos, V2 size, float rot, float depth, D3DXCOLOR color)
-{
-	for (auto& iter = anim.begin(); iter != anim.end();)
-	{
-
-	}
-}
-
 ImgMgr::ImgMgr()
 	: sprite(nullptr), font(nullptr)
 {
@@ -62,19 +23,7 @@ ImgMgr::~ImgMgr()
 	sprite->Release();
 }
 
-Anim* ImgMgr::Add(const string& name, float fps)
-{
-	auto f = anims.find(name);
-	if (f == anims.end())
-	{
-		Anim* temp = new Anim(name, fps);
-		anims[name] = temp;
-		return temp;
-	}
-	return f->second;
-}
-
-Texture* ImgMgr::Add(const string& key, const string& folder)
+Texture* ImgMgr::Add(const string& key)
 {
 	auto f = textures.find(key);
 	if (f == textures.end())
@@ -83,7 +32,7 @@ Texture* ImgMgr::Add(const string& key, const string& folder)
 		D3DXIMAGE_INFO info;
 
 		char str[256];
-		sprintf(str, "./Resource/%s/%s.png", folder.c_str(), key.c_str());
+		sprintf(str, "./Resource/image/%s.png", key.c_str());
 
 		if (D3DXCreateTextureFromFileExA(DEVICE, str, -2, -2, 0, 0, (D3DFORMAT)0, (D3DPOOL)1, -1, -1, 0, &info, nullptr, &p) == S_OK)
 		{

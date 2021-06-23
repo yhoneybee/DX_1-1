@@ -6,16 +6,19 @@ class Enemy :
 public:
     Enemy(int type);
 
+    Obj* player;
     vector<Effect*> fxs;
     Texture* img;
     Timer* timer;
     Timer* during;
+    Anim* death = nullptr;
     V2 size;
     V2 dir;
 
     float cool;
     int type;
     int spin_force;
+    bool isAnim = false;
 
     void Rush();
     void CircleShot(float angle, int shots);

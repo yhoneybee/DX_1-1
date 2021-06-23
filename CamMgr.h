@@ -15,6 +15,7 @@ public:
 	V2 pos, size;
 	V3 scale;
 	float rot;
+	bool followable = true;
 private:
 	M pro, view;
 

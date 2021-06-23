@@ -14,7 +14,8 @@ void CamMgr::Update()
 {
 	Obj* player = OBJ->Find("player");
 	if (player)
-		pos = player->pos;
+		if (followable)
+			pos = player->pos;
 
 	if (!shake_timer->IsStop())
 	{

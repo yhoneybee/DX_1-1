@@ -81,6 +81,7 @@ enum BulletCase
 #include "st.h"
 #include "TimeMgr.h"
 #include "ImgMgr.h"
+#include "AnimMgr.h"
 #include "ObjMgr.h"
 #include "CamMgr.h"
 #include "SceneMgr.h"

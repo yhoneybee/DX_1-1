@@ -386,6 +386,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AnimMgr.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Effect.cpp" />
@@ -408,6 +409,7 @@
     <ClCompile Include="TimeMgr.cpp" />
     <ClCompile Include="Title.cpp" />
     <ClCompile Include="Window.cpp" />
+    <ClInclude Include="AnimMgr.h" />
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="CamMgr.h" />

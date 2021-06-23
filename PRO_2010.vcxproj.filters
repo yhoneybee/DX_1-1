@@ -81,6 +81,9 @@
     <Filter Include="CLASS\Gun">
       <UniqueIdentifier>{de3141cb-5197-4e49-a2bc-d56ee0f8de34}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Mgr\ANIM">
+      <UniqueIdentifier>{e8165ad3-5925-4b3e-9342-fd0e1ec46d6d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="DXUT\Optional\directx.ico">
@@ -233,6 +236,9 @@
     <ClCompile Include="Gun.cpp">
       <Filter>CLASS\Gun</Filter>
     </ClCompile>
+    <ClCompile Include="AnimMgr.cpp">
+      <Filter>Mgr\ANIM</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -328,6 +334,9 @@
     </ClInclude>
     <ClInclude Include="Gun.h">
       <Filter>CLASS\Gun</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimMgr.h">
+      <Filter>Mgr\ANIM</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

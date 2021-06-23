@@ -22,13 +22,13 @@ void Ingame::Init()
 	case 1:
 		Player::coloring_per = 0;
 		OBJ->Add(new Enemy(7), "boss")->pos = CENTER;
+		score = 0;
 		for (size_t i = 0; i < enemy_count; i++)
 		{
 			Enemy* enemy = new Enemy(RANDOM->INT(1, 2));
 			OBJ->Add(enemy, "enemy")->pos = { (float)RANDOM->INT(0, WINX), (float)RANDOM->INT(0, WINY) };
 			enemys.emplace_back(enemy);
 		}
-		score = 0;
 		break;
 	case 2:
 		Player::coloring_per = 0;
@@ -45,10 +45,10 @@ void Ingame::Update()
 		switch (type)
 		{
 		case 1:
-			SCENE->Set("stage2");
+			OBJ->Find("boss")->hp = 0;
 			break;
 		case 2:
-			SCENE->Set("clear");
+			OBJ->Find("boss")->hp = 0;
 			break;
 		}
 	}

@@ -19,6 +19,7 @@ void MainGame::Update()
 	CAM->Update();
 	SCENE->Update();
 	OBJ->Update();
+	ANIM->Update();
 }
 
 void MainGame::Render()
@@ -37,6 +38,7 @@ void MainGame::Release()
 	ImgMgr::D();
 	ObjMgr::D();
 	HotKey::D();
+	AnimMgr::D();
 	TimeMgr::D();
 	SceneMgr::D();
 	SoundMgr::D();

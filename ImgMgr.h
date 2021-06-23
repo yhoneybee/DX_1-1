@@ -9,21 +9,7 @@ struct Texture
 	void Render(V2 pos = CENTER, RECT rt = ZERO, V2 size = ONE, float rot = 0, float depth = 1, D3DXCOLOR color = D3DCOLOR_RGBA(255, 255, 255, 255), bool center = true);
 	void Release() { SAFE_RELEASE(p); }
 };
-struct Anim
-{
-	vector<Texture*> anim;
 
-	Timer* anim_timer;
-
-	float fps;
-
-	bool isPlay = false;
-	bool isLoop = true;
-
-	Anim(const string& name, float fps);
-
-	void Render(bool isLoop = true, V2 pos = CENTER, V2 size = ONE, float rot = 0, float depth = 1, D3DXCOLOR color = D3DCOLOR_RGBA(255, 255, 255, 255));
-};
 class ImgMgr :
 	public st<ImgMgr>
 {
@@ -31,8 +17,7 @@ public:
 	ImgMgr();
 	~ImgMgr();
 
-	Texture* Add(const string& key, const string& folder = "image");
-	Anim* Add(const string& name, float fps);
+	Texture* Add(const string& key);
 	Texture* ReLoad(const string& key);
 
 	void Begin();
@@ -46,7 +31,6 @@ public:
 	LPD3DXSPRITE sprite;
 	LPD3DXFONT font;
 	map<string, Texture*> textures;
-	map<string, Anim*> anims;
 };
 
 #define IMG ImgMgr::G()

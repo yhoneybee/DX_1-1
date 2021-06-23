@@ -9,6 +9,7 @@ public:
     Texture* bg;
     Texture* bg_lower;
     Timer* during;
+    Anim* idle;
     Obj* boss;
     V2 start;
     V2 temp_pos;

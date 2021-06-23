@@ -29,6 +29,8 @@ void Enemy::CircleShot(float angle, int shots)
 
 void Enemy::Init()
 {
+	hp = 500;
+	player = OBJ->Find("player");
 	dir = RANDOM->Vec2(pos);
 	char str[256];
 	sprintf(str, "enemy%d", type);
@@ -65,6 +67,7 @@ void Enemy::Init()
 		break;
 	}
 
+	death = ANIM->Add("boss_BOOM", 30);
 	timer = TIME->Create(cool);
 	timer->Start();
 	during = TIME->Create(3);
@@ -143,6 +146,32 @@ void Enemy::Update()
 			return;
 		}
 
+	if (hp <= 0)
+	{
+		if (!death->isStart && isAnim)
+		{
+			if (SCENE->round == 1)
+				SCENE->Set("stage2");
+			else if (SCENE->round == 2)
+				SCENE->Set("clear");
+		}
+		if (type >= 7)
+			if (!death->isStart)
+			{
+				if (!isAnim)
+				{
+					death->Start(false);
+					isAnim = true;
+				}
+			}
+			else
+			{
+				CAM->followable = false;
+				CAM->pos = OBJ->Find("boss")->pos;
+				CAM->scale += V3(0.01, 0.01, 0.01);
+			}
+	}
+
 	//for (int y = -range; y <= range; y++)
 	//	for (int x = -range; x <= range; x++)
 	//		if (Player::cell[c.x + x >= CELLSIZE_X ? CELLSIZE_X - 1 : c.x + x][c.y + y >= CELLSIZE_Y ? CELLSIZE_Y - 1 : c.y + y] == 2)
@@ -155,6 +184,7 @@ void Enemy::Render()
 	for (auto& i : fxs)
 		i->Render();
 	img->Render(pos, ZERO, ONE, atan2(dir.x, -dir.y), 0);
+	death->Render(CAM->pos, ZERO, ONE, 0, 0);
 }
 
 void Enemy::Release()

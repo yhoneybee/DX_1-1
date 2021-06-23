@@ -88,6 +88,8 @@ int Player::Nums(int num, int index)
 
 void Player::Init()
 {
+	idle = ANIM->Add("player_idle", 30);
+	idle->Start();
 	boss = OBJ->Find("boss");
 	bg = IMG->ReLoad("round1_before");
 	bg_lower = IMG->Add("round1_after");
@@ -234,6 +236,7 @@ void Player::Render()
 	main_col->Draw();
 	bg_lower->Render();
 	bg->Render(CENTER, ZERO, ONE, 0, 1, D3DCOLOR_RGBA(255, 255, 255, 255));
+	idle->Render(pos, ZERO, ONE / 2, atan2(dir.x, -dir.y));
 
 	switch (key)
 	{
@@ -243,7 +246,7 @@ void Player::Render()
 	case Player::KeyState::RIGHT: dir = { 1,0 }; break;
 	}
 
-	img->Render(pos, ZERO, ONE / 4, atan2(dir.x, -dir.y));
+	//img->Render(pos, ZERO, ONE / 4, atan2(dir.x, -dir.y));
 
 	//char str1[256];
 	//sprintf(str1, "%.2f%%", (double)coloring_per);

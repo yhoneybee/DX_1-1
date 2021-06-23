@@ -10,7 +10,8 @@ HotKey::HotKey()
 
 void HotKey::F1()
 {
-	((Player*)player)->NoDamage();
+	Player::coloring_per = 100;
+	//((Player*)player)->NoDamage();
 }
 
 void HotKey::F2()
