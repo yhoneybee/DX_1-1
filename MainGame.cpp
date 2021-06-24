@@ -35,10 +35,10 @@ void MainGame::Render()
 void MainGame::Release()
 {
 	CamMgr::D();
+	AnimMgr::D();
 	ImgMgr::D();
 	ObjMgr::D();
 	HotKey::D();
-	AnimMgr::D();
 	TimeMgr::D();
 	SceneMgr::D();
 	SoundMgr::D();
