@@ -21,19 +21,19 @@ void AnimMgr::Update()
 		anim.second->Update();
 }
 
-Anim* AnimMgr::Add(const string& name, float fps)
+Anim* AnimMgr::Add(const string& name, float fps, const string& before, const string& after)
 {
 	auto f = anims.find(name);
 	if (f == anims.end())
 	{
-		Anim* temp = new Anim(name, fps);
+		Anim* temp = new Anim(name, 12, before, after);
 		anims[name] = temp;
 		return temp;
 	}
 	return f->second;
 }
 
-Anim::Anim(const string& name, float fps)
+Anim::Anim(const string& name, float fps, const string& before, const string& after)
 {
 	timer = TIME->Create(1 / fps);
 
@@ -53,7 +53,7 @@ Anim::Anim(const string& name, float fps)
 		sprintf(str_log, "%s anim loading %02d...\n", name.c_str(), index);
 		OutputDebugStringA(str_log);
 
-		sprintf(str_name, "anim/%s/(%d)", name.c_str(), index);
+		sprintf(str_name, "anim/%s/%s%d%s", name.c_str(), before.c_str(), index, after.c_str());
 
 		temp = IMG->Add(str_name);
 
@@ -65,6 +65,8 @@ Anim::Anim(const string& name, float fps)
 
 	sprintf(str_log, "%s anim count : %d\n", name.c_str(), (int)anim.size());
 	OutputDebugStringA(str_log);
+
+	CurText = anim[0];
 }
 
 void Anim::Update()
@@ -75,21 +77,23 @@ void Anim::Update()
 		{
 			if (frame >= anim.size() - 1)
 			{
-				if (isLoop)
-					frame = 0;
-				else
+				frame = 0;
+				if (!isLoop)
+				{
+					frame = anim.size() - 2;
 					isStart = false;
+				}
 			}
 			frame++;
 			timer->Start();
 		}
 	}
-	else
-		frame = 0;
+
+	CurText = anim[frame];
 }
 
 void Anim::Render(V2 pos, RECT rt, V2 size, float rot, float depth, D3DXCOLOR color, bool center)
 {
-	if (isStart)
+	if (isStart || render_awalys)
 		anim[frame]->Render(pos, rt, size, rot, depth, color, center);
 }

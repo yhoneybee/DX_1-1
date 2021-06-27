@@ -9,6 +9,7 @@ void MainGame::Init()
 	SCENE->Add(new Ingame(2), "stage2");
 	SCENE->Add(new End(1), "clear");
 	SCENE->Add(new End(2), "fail");
+	SCENE->Add(new End(3), "next");
 	SCENE->Set("title");
 }
 

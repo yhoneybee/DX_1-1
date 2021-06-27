@@ -1,22 +1,27 @@
 #pragma once
 struct Anim
 {
-	Anim(const string& name, float fps);
+	Anim(const string& name, float fps, const string& before, const string& after);
 
-	void Start(bool isLoop = true)
+	void Start(bool isLoop = true, bool render_awalys = false)
 	{
+		frame = 0;
 		this->isLoop = isLoop;
+		this->render_awalys = render_awalys;
 		isStart = true;
 	}
+
 	void Update();
-	void Render(V2 pos = CENTER, RECT rt = ZERO, V2 size = ONE, float rot = 0, float depth = 1, D3DXCOLOR color = D3DCOLOR_RGBA(255, 255, 255, 255), bool center = true);
+	void Render(V2 pos = CENTER, RECT rt = ZERO, V2 size = ONE, float rot = 0, float depth = 1, D3DXCOLOR color = MAX, bool center = true);
 
 	vector<Texture*> anim;
+	Texture* CurText;
 	Timer* timer;
 
 	int frame = 0;
 	bool isLoop = true;
 	bool isStart = false;
+	bool render_awalys = false;
 };
 
 class AnimMgr :
@@ -27,7 +32,7 @@ public:
 	~AnimMgr();
 
 	void Update();
-	Anim* Add(const string& name, float fps = 1);
+	Anim* Add(const string& name, float fps = 1, const string& before = "(", const string& after = ")");
 
 	map<string, Anim*> anims;
 };

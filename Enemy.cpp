@@ -77,6 +77,9 @@ void Enemy::Update()
 {
 	for (int i = 0; i < speed; i++)
 	{
+		if (OBJ->Find("boss")->hp <= 0)
+			break;
+
 		pos += dir;
 
 		if (pos.x < L)
@@ -151,7 +154,7 @@ void Enemy::Update()
 		if (!death->isStart && isAnim)
 		{
 			if (SCENE->round == 1)
-				SCENE->Set("stage2");
+				SCENE->Set("next");
 			else if (SCENE->round == 2)
 				SCENE->Set("clear");
 		}
@@ -168,7 +171,7 @@ void Enemy::Update()
 			{
 				CAM->followable = false;
 				CAM->pos = OBJ->Find("boss")->pos;
-				CAM->scale += V3(0.01, 0.01, 0.01);
+				CAM->scale += V3(0.005, 0.005, 0.005);
 			}
 	}
 

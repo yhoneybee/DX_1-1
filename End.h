@@ -9,6 +9,7 @@ public:
     Texture* bg;
     ScrollMap* map;
 
+    Button* next;
     Button* restart;
     Button* title;
 

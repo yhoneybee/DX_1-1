@@ -8,7 +8,9 @@ Button::Button(Texture* bg, V2 pos, const string& text, float w, float h, float 
 	this->pos = pos;
 
 	main_col = new Col(this, UI);
-	main_col->Set(pos, w, h);
+
+	this->w = w;
+	this->h = h;
 
 	OBJ->Add(this, "Button");
 }
@@ -31,6 +33,7 @@ void Button::Init()
 
 void Button::Update()
 {
+	main_col->Set(pos, w, h);
 }
 
 void Button::Render()

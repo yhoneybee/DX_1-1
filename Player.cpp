@@ -6,73 +6,6 @@ extern float time_scale;
 int Player::cell[CELLSIZE_X][CELLSIZE_Y] = { 0, };
 float Player::coloring_per = 0;
 
-//void Player::Fire(V2 start_pos, int bullet_pattern, int bullet_count)
-//{
-//	int angle = 0;
-//
-//	int forword = -90;
-//	int right = 0;
-//	int left = 180;
-//	int back = 90;
-//	float look = D3DXToDegree(atan2f(dir.x, -dir.y));
-//
-//	switch (bullet_pattern)
-//	{
-//	case 1:
-//	{
-//		angle = 360;
-//		float value = angle / bullet_count;
-//		for (float i = look - (angle / 2) + forword; i <= look + (angle / 2) + forword; i += value)
-//		{
-//			//OBJ->Add(new Bullet(BulletCase::SHURIKEN, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
-//			OBJ->Add(new Bullet(BulletCase::CRICLE, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
-//			OBJ->Add(new Bullet(BulletCase::HURRICANE, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
-//			//OBJ->Add(new Bullet(BulletCase::CROSS, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
-//		}
-//	}
-//	break;
-//	case 2:
-//	{
-//		angle = 270;
-//		float value = angle / bullet_count;
-//		for (float i = look - (angle / 2) + right; i <= look + (angle / 2) + right; i += value)
-//		{
-//			OBJ->Add(new Bullet(BulletCase::SHURIKEN, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
-//			//OBJ->Add(new Bullet(BulletCase::CRICLE, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
-//			OBJ->Add(new Bullet(BulletCase::HURRICANE, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
-//			//OBJ->Add(new Bullet(BulletCase::CROSS, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
-//		}
-//	}
-//	break;
-//	case 3:
-//	{
-//		angle = 180;
-//		float value = angle / bullet_count;
-//		for (float i = look - (angle / 2) + left; i <= look + (angle / 2) + left; i += value)
-//		{
-//			//OBJ->Add(new Bullet(BulletCase::SHURIKEN, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
-//			OBJ->Add(new Bullet(BulletCase::CRICLE, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
-//			//OBJ->Add(new Bullet(BulletCase::HURRICANE, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
-//			OBJ->Add(new Bullet(BulletCase::CROSS, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
-//		}
-//	}
-//	break;
-//	case 4:
-//	{
-//		angle = 90;
-//		float value = angle / bullet_count;
-//		for (float i = look - (angle / 2) + back; i <= look + (angle / 2) + back; i += value)
-//		{
-//			OBJ->Add(new Bullet(BulletCase::SHURIKEN, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
-//			//OBJ->Add(new Bullet(BulletCase::CRICLE, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
-//			//OBJ->Add(new Bullet(BulletCase::HURRICANE, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
-//			OBJ->Add(new Bullet(BulletCase::CROSS, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }), "Bullet")->pos = pos;
-//		}
-//	}
-//	break;
-//	}
-//}
-
 int Player::Nums(int num, int index)
 {
 	vector<int> nums;
@@ -88,6 +21,8 @@ int Player::Nums(int num, int index)
 
 void Player::Init()
 {
+	ANIM->Add("Start", 12, "START_", "")->Start(false);
+
 	CAM->followable = true;
 	CAM->Reset();
 	CAM->scale = { 1.5,1.5,1.5 };
@@ -248,20 +183,8 @@ void Player::Render()
 	case Player::KeyState::RIGHT: dir = { 1,0 }; break;
 	}
 
-	//img->Render(pos, ZERO, ONE / 4, atan2(dir.x, -dir.y));
-
-	//char str1[256];
-	//sprintf(str1, "%.2f%%", (double)coloring_per);
-	//IMG->Write(str1, { pos.x - 425 - 10,pos.y - 200 + 100 }, 10);
-	//sprintf(str1, "hp : %d", hp);
-	//IMG->Write(str1, { pos.x - 425 - 10,pos.y - 200 + 120 }, 10);
-	//sprintf(str1, "speed : %.2f", (double)speed);
-	//IMG->Write(str1, { pos.x - 425 - 20,pos.y - 200 + 140 }, 10);
-	//sprintf(str1, "def : %d", def); 아마도 무기 장착 뜰것같음
-	//IMG->Write(str1, { pos.x - 425 - 15,pos.y - 200 + 160 }, 10);
-
 	IMG->Add("Start_BG")->Render(pos, ZERO, ONE, 0, 1, D3DCOLOR_RGBA(255, 255, 255, title_a));
-	IMG->Add("Start_title")->Render(pos, ZERO, ONE, 0, 1, D3DCOLOR_RGBA(255, 255, 255, title_a));
+	ANIM->Add("Start", 12, "START_", "")->Render(pos, ZERO, ONE * 0.7, 0, 1, D3DCOLOR_RGBA(255, 255, 255, 255));
 
 	title_a = (title_a - 10 < 0 ? 0 : title_a - 10);
 

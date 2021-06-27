@@ -38,6 +38,7 @@ const V2 gap = { (WINX - CELLSIZE_X) / 2 ,(WINY - CELLSIZE_Y) / 2 };
 
 const RECT ZERO = { 0,0,0,0 };
 const V2 ONE = { 1,1 };
+const D3DXCOLOR MAX = D3DXCOLOR(1, 1, 1, 1);
 
 const bool DrawDebug = false;
 
