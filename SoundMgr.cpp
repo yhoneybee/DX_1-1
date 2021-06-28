@@ -38,7 +38,7 @@ Sound* SoundMgr::Add(const string& key, const wstring& path)
         wchar_t wstr[256];
         swprintf(wstr, L"./Resource/sound/%s.wav", path.c_str());
         CSound* cs;
-        mgr->Create(&cs, wstr);
+        mgr->Create(&cs, wstr, DSBCAPS_CTRLPAN | DSBCAPS_CTRLVOLUME);
         Sound* s = new Sound(cs);
         sounds[key] = s;
         return s;
