@@ -38,7 +38,7 @@ void SceneMgr::Set(const string& key)
 
 void SceneMgr::Update()
 {
-	if (OBJ->l_obj.empty())
+	if (OBJ->l_obj.empty() && !now->inited)
 	{
 		now->Init();
 		now->inited = true;

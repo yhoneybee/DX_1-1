@@ -32,7 +32,7 @@ public:
 	~AnimMgr();
 
 	void Update();
-	Anim* Add(const string& name, float fps = 1, const string& before = "(", const string& after = ")");
+	Anim* Add(const string& name, const string& before = "(", const string& after = ")");
 
 	map<string, Anim*> anims;
 };

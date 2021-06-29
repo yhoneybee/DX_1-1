@@ -3,6 +3,7 @@
 
 void MainGame::Init()
 {
+	SCENE->Add(new LoadScene(), "load");
 	SCENE->Add(new Title(1), "intro");
 	SCENE->Add(new Title(2), "title");
 	SCENE->Add(new Ingame(1), "stage1");
@@ -13,7 +14,7 @@ void MainGame::Init()
 
 	SCENE->Add(new DialogScene(1), "dialog1");
 
-	SCENE->Set("title");
+	SCENE->Set("load");
 }
 
 void MainGame::Update()

@@ -245,6 +245,9 @@
     <ClCompile Include="DialogScene.cpp">
       <Filter>Game\scene</Filter>
     </ClCompile>
+    <ClCompile Include="LoadScene.cpp">
+      <Filter>Game\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -348,6 +351,9 @@
       <Filter>Game\obj\UI</Filter>
     </ClInclude>
     <ClInclude Include="DialogScene.h">
+      <Filter>Game\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadScene.h">
       <Filter>Game\scene</Filter>
     </ClInclude>
   </ItemGroup>

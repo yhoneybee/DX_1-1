@@ -21,7 +21,7 @@ void AnimMgr::Update()
 		anim.second->Update();
 }
 
-Anim* AnimMgr::Add(const string& name, float fps, const string& before, const string& after)
+Anim* AnimMgr::Add(const string& name, const string& before, const string& after)
 {
 	auto f = anims.find(name);
 	if (f == anims.end())

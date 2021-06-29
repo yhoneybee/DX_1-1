@@ -12,9 +12,9 @@ void DialogScene::Init()
 
 		dialog->scripts.emplace_back(Script("여기는...?"));
 		dialog->scripts.emplace_back(Script("뭔 여기는이야? 여기는", "빨리 안 일어나?"));
-		dialog->scripts.emplace_back(Script("뭐 씨발아"));
-		dialog->scripts.emplace_back(Script("???", "씨발럼이?"));
-		dialog->scripts.emplace_back(Script("?"));
+		dialog->scripts.emplace_back(Script("내 이름은?"));
+		dialog->scripts.emplace_back(Script("?", "싸가지가 없네"));
+		dialog->scripts.emplace_back(Script("히히!히히!네이스!"));
 		break;
 	}
 

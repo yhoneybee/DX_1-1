@@ -3,7 +3,7 @@
 
 void Dialog::Init()
 {
-	chater2.alpha = 0.5;
+	chater2.alpha = 0.3;
 }
 
 void Dialog::Update()

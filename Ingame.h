@@ -16,7 +16,7 @@ public:
     static list<Enemy*> enemys;
 
     int type;
-    int enemy_count = 30;
+    int enemy_count = 7;
 
     // Scene을(를) 통해 상속됨
     virtual void Init() override;

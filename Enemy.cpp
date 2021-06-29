@@ -67,7 +67,7 @@ void Enemy::Init()
 		break;
 	}
 
-	death = ANIM->Add("boss_BOOM", 30);
+	death = ANIM->Add("boss_BOOM");
 	timer = TIME->Create(cool);
 	timer->Start();
 	during = TIME->Create(3);

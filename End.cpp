@@ -8,9 +8,9 @@ End::End(int type)
 
 void End::Init()
 {
-	ANIM->Add("next", 3, "next_", "")->Start(false, true);
-	ANIM->Add("restart", 3, "restart_", "")->Start(false, true);
-	ANIM->Add("home", 3, "home_", "")->Start(false, true);
+	ANIM->Add("next", "next_", "")->Start(false, true);
+	ANIM->Add("restart", "restart_", "")->Start(false, true);
+	ANIM->Add("home", "home_", "")->Start(false, true);
 
 	CAM->pos = CENTER;
 	CAM->scale = { 1,1,1 };
@@ -22,17 +22,17 @@ void End::Init()
 	switch (type)
 	{
 	case 1:
-		ANIM->Add("clear_title", 3, "Clear_", "")->Start(false, true);
+		ANIM->Add("clear_title", "Clear_", "")->Start(false, true);
 		restart = new Button(IMG->Add("BigBlue"), { CENTER.x - 300,CENTER.y + 300 }, "", 160, 160, 1, [&]()->void {SCENE->Set("stage1"); });
 		title = new Button(IMG->Add("BigBlue"), { float(R - 100),float(B - 100) }, "", 160, 160, 1, [&]()->void {SCENE->Set("title"); });
 		break;
 	case 2:
-		ANIM->Add("fail_title", 3, "FAIL_", "")->Start(false, true);
+		ANIM->Add("fail_title", "FAIL_", "")->Start(false, true);
 		restart = new Button(IMG->Add("BigBlue"), { CENTER.x,CENTER.y + 270 }, "", 160, 160, 1, [&]()->void {SCENE->Set("stage1"); });
 		title = new Button(IMG->Add("BigBlue"), { float(R - 100),float(B - 100) }, "", 160, 160, 1, [&]()->void {SCENE->Set("title"); });
 		break;
 	case 3:
-		ANIM->Add("clear_title", 3, "Clear_", "")->Start(false, true);
+		ANIM->Add("clear_title", "Clear_", "")->Start(false, true);
 		next = new Button(IMG->Add("BigBlue"), { CENTER.x - 100,CENTER.y + 270 }, "", 160, 160, 1, [&]()->void {SCENE->Set("stage2"); });
 		restart = new Button(IMG->Add("BigBlue"), { CENTER.x + 100,CENTER.y + 270 }, "", 160, 160, 1, [&]()->void {SCENE->Set("stage1"); });
 		title = new Button(IMG->Add("BigBlue"), { float(R - 100),float(B - 100) }, "", 160, 160, 1, [&]()->void {SCENE->Set("title"); });
@@ -46,10 +46,10 @@ void End::Update()
 		map->Update(500);
 
 	if (type == 3)
-		next->bg = ANIM->Add("next", 3, "next_", "")->CurText;
+		next->bg = ANIM->Add("next", "next_", "")->CurText;
 
-	restart->bg = ANIM->Add("restart", 3, "restart_", "")->CurText;
-	title->bg = ANIM->Add("home", 3, "home_", "")->CurText;
+	restart->bg = ANIM->Add("restart", "restart_", "")->CurText;
+	title->bg = ANIM->Add("home", "home_", "")->CurText;
 }
 
 void End::Render()
@@ -60,13 +60,13 @@ void End::Render()
 	switch (type)
 	{
 	case 1:
-		ANIM->Add("clear_title", 3, "Clear_", "")->Render();
+		ANIM->Add("clear_title", "Clear_", "")->Render();
 		break;
 	case 2:
-		ANIM->Add("fail_title", 3, "FAIL_", "")->Render();
+		ANIM->Add("fail_title", "FAIL_", "")->Render();
 		break;
 	case 3:
-		ANIM->Add("clear_title", 3, "Clear_", "")->Render();
+		ANIM->Add("clear_title", "Clear_", "")->Render();
 		break;
 	}
 }

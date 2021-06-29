@@ -21,13 +21,13 @@ int Player::Nums(int num, int index)
 
 void Player::Init()
 {
-	ANIM->Add("Start", 12, "START_", "")->Start(false);
+	ANIM->Add("Start", "START_", "")->Start(false);
 
 	CAM->followable = true;
 	CAM->Reset();
 	CAM->scale = { 1.5,1.5,1.5 };
 
-	idle = ANIM->Add("player_idle", 30);
+	idle = ANIM->Add("player_idle");
 	idle->Start();
 	boss = OBJ->Find("boss");
 	bg = IMG->ReLoad("round1_before");
@@ -184,7 +184,7 @@ void Player::Render()
 	}
 
 	IMG->Add("Start_BG")->Render(pos, ZERO, ONE, 0, 1, D3DCOLOR_RGBA(255, 255, 255, title_a));
-	ANIM->Add("Start", 12, "START_", "")->Render(pos, ZERO, ONE * 0.7, 0, 1, D3DCOLOR_RGBA(255, 255, 255, 255));
+	ANIM->Add("Start", "START_", "")->Render(pos, ZERO, ONE * 0.7, 0, 1, D3DCOLOR_RGBA(255, 255, 255, 255));
 
 	title_a = (title_a - 10 < 0 ? 0 : title_a - 10);
 

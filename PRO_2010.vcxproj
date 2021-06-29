@@ -31,7 +31,7 @@
     <ProjectGuid>{D3D09108-96D0-4629-88B8-122C0256058C}</ProjectGuid>
     <RootNamespace>PRO</RootNamespace>
     <Keyword>Win32Proj</Keyword>
-    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -399,6 +399,7 @@
     <ClCompile Include="Ingame.cpp" />
     <ClCompile Include="InputMgr.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="LoadScene.cpp" />
     <ClCompile Include="MiniMap.cpp" />
     <ClCompile Include="Mouse.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -429,6 +430,7 @@
     <ClInclude Include="Ingame.h" />
     <ClInclude Include="InputMgr.h" />
     <ClInclude Include="Item.h" />
+    <ClInclude Include="LoadScene.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="MiniMap.h" />
     <ClInclude Include="Mouse.h" />

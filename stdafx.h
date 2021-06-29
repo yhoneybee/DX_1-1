@@ -106,6 +106,7 @@ enum BulletCase
 
 
 //SCENE
+#include "LoadScene.h"
 #include "Title.h"
 #include "Ingame.h"
 #include "End.h"
