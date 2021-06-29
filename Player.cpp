@@ -405,7 +405,7 @@ int Player::FloodFill(V2 pos, int target, int change)
 	if (change == 3)
 		add = true;
 
-	cell[int(pos.x)][int(pos.x)] = change;
+	cell[int(pos.x)][int(pos.y)] = change;
 	if (add) temp++;
 
 	v2q.push(pos);
