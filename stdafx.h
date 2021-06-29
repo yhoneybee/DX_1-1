@@ -102,11 +102,14 @@ enum BulletCase
 #include "Mouse.h"
 #include "Button.h"
 #include "Window.h"
+#include "Dialog.h"
+
 
 //SCENE
 #include "Title.h"
 #include "Ingame.h"
 #include "End.h"
+#include "DialogScene.h"
 
 //OBJ
 #include "MiniMap.h"

@@ -22,6 +22,7 @@ void SceneMgr::Set(const string& key)
 		round = 1;
 	if (key == "stage2")
 		round = 2;
+
 	auto f = scenes.find(key);
 	if (f != scenes.end())
 	{

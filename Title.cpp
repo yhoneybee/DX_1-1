@@ -27,7 +27,7 @@ void Title::Init()
 		title_end_pos = { CENTER.x + 150,CENTER.y - 250 };
 		title_pos = { title_end_pos.x,title_end_pos.y - 300 };
 
-		start = new Button(IMG->Add("Start"), { CENTER.x + 150,CENTER.y + 30 }, "", 225, 100, 1, [&]()->void {SCENE->Set("stage1"); });
+		start = new Button(IMG->Add("Start"), { CENTER.x + 150,CENTER.y + 30 }, "", 225, 100, 1, [&]()->void {SCENE->Set("dialog1"); });
 		start->a = 0;
 		option = new Button(IMG->Add("Option"), { CENTER.x + 200,CENTER.y + 180 }, "", 225, 50, 1, [&]()->void {});
 		option->a = 0;
