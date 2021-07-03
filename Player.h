@@ -63,8 +63,6 @@ public:
     //void little_sleep(milliseconds us);
     //void Flash(V2 v2);
 
-    Gun* gun;
-
     int Nums(int num, int index);
 
     int title_a;

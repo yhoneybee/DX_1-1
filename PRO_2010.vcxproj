@@ -389,6 +389,8 @@
     <ClCompile Include="AnimMgr.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="ChangeScene.cpp" />
+    <ClCompile Include="CreditScene.cpp" />
     <ClCompile Include="Dialog.cpp" />
     <ClCompile Include="DialogScene.cpp" />
     <ClCompile Include="Effect.cpp" />
@@ -416,7 +418,9 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="CamMgr.h" />
+    <ClInclude Include="ChangeScene.h" />
     <ClInclude Include="Col.h" />
+    <ClInclude Include="CreditScene.h" />
     <ClInclude Include="Dialog.h" />
     <ClInclude Include="DialogScene.h" />
     <ClInclude Include="DXUT\Optional\SDKsound.h" />

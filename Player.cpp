@@ -36,7 +36,7 @@ void Player::Init()
 
 	OBJ->Add(new MiniMap, "minimap");
 
-	gun = new Gun();
+	//gun = new Gun();
 
 	memset(bg_color, D3DXCOLOR(0, 0, 0, 0), sizeof(bg_color));
 
@@ -63,7 +63,7 @@ void Player::Init()
 	draw_mode = false;
 	no_damage = false;
 
-	gun->SetDir(&dir);
+	//gun->SetDir(&dir);
 }
 
 void Player::Update()
@@ -152,20 +152,20 @@ void Player::Update()
 	if (INPUT->Down(VK_F5)) HOT->F5();
 	if (INPUT->Down(VK_F6)) HOT->F6();
 
-	if (INPUT->Down('Z'))
-	{
-		gun->pattern = gun->pattern - 1 < 1 ? 1 : gun->pattern - 1;
-	}
-	if (INPUT->Down('X'))
-	{
-		CAM->Shake(0.1f, 2);
-		gun->SetPostiton(pos);
-		gun->PatternStart();
-	}
-	if (INPUT->Down('C'))
-	{
-		gun->pattern = gun->pattern + 1 > gun->GetMaxPattern() ? gun->GetMaxPattern() : gun->pattern + 1;
-	}
+	//if (INPUT->Down('Z'))
+	//{
+	//	gun->pattern = gun->pattern - 1 < 1 ? 1 : gun->pattern - 1;
+	//}
+	//if (INPUT->Down('X'))
+	//{
+	//	CAM->Shake(0.1f, 2);
+	//	gun->SetPostiton(pos);
+	//	gun->PatternStart();
+	//}
+	//if (INPUT->Down('C'))
+	//{
+	//	gun->pattern = gun->pattern + 1 > gun->GetMaxPattern() ? gun->GetMaxPattern() : gun->pattern + 1;
+	//}
 }
 
 void Player::Render()
@@ -195,44 +195,45 @@ void Player::Render()
 	//-409 : -3
 	// 1 : 99 = -406 : 0
 	// 0 : 100 = -407 : 1
-	int value = 408 * (coloring_per / 100);
-	IMG->Add("gage_infill")->Render({ pos.x - 15,pos.y - 222 }, { -LONG(415 / 2),-LONG(47 / 2),LONG(415 / 2) - 410 + value,LONG(47 / 2) }, ONE, 0, 0);
-	IMG->Add("gage")->Render({ pos.x,pos.y - 250 }, ZERO, ONE, 0, 0);
-	IMG->Add("tik")->Render({ pos.x - 14.5f + (LONG(415 / 2) - 410 + value),pos.y - 200 }, ZERO, ONE, 0, 0);
+	//int value = 408 * (coloring_per / 100);
+	//IMG->Add("gage_infill")->Render({ pos.x - 15,pos.y - 222 }, { -LONG(415 / 2),-LONG(47 / 2),LONG(415 / 2) - 410 + value,LONG(47 / 2) }, ONE, 0, 0);
+	//IMG->Add("gage")->Render({ pos.x,pos.y - 250 }, ZERO, ONE, 0, 0);
+	//IMG->Add("tik")->Render({ pos.x - 14.5f + (LONG(415 / 2) - 410 + value),pos.y - 200 }, ZERO, ONE, 0, 0);
 
-	IMG->Add("Round_Text")->Render({ pos.x + 395,pos.y + 200 });
-	sprintf(str, "number/%d", SCENE->round);
-	IMG->Add(str)->Render({ pos.x + 480,pos.y + 175 });
-	IMG->Add("bar")->Render({ pos.x + 415,pos.y + 230 });
-	IMG->Add("persent")->Render({ pos.x + 475,pos.y + 260 });
+	IMG->Add("score_ui")->Render({ pos.x,pos.y - 230 }, ZERO, ONE * 0.7, 0, 0);
+
+	sprintf(str, "ST_%d", SCENE->round);
+	IMG->Add(str)->Render({ pos.x + 440,pos.y - 260 });
+
+	V2 temp = { -210,-493 };
 
 	sprintf(str, "number/%d", Nums(int(coloring_per), 1));
-	IMG->Add(str)->Render({ pos.x + 339,pos.y + 260 }, ZERO, ONE / 2.3);
+	IMG->Add(str)->Render({ pos.x + 340 + temp.x,pos.y + 260 + temp.y }, ZERO, ONE * 0.2, 0, 0);
 	sprintf(str, "number/%d", Nums(int(coloring_per), 0));
-	IMG->Add(str)->Render({ pos.x + 364,pos.y + 260 }, ZERO, ONE / 2.3);
+	IMG->Add(str)->Render({ pos.x + 353 + temp.x,pos.y + 260 + temp.y }, ZERO, ONE * 0.2, 0, 0);
 
-	IMG->Add("number/dot")->Render({ pos.x + 381,pos.y + 275 }, ZERO, ONE / 2.3);
+	IMG->Add("number/dot")->Render({ pos.x + 362 + temp.x,pos.y + 270 + temp.y }, ZERO, ONE * 0.2, 0, 0);
 
 	sprintf(str, "number/%d", Nums(int(coloring_per * 10), 0));
-	IMG->Add(str)->Render({ pos.x + 400,pos.y + 260 }, ZERO, ONE / 2.3);
+	IMG->Add(str)->Render({ pos.x + 371 + temp.x,pos.y + 260 + temp.y }, ZERO, ONE * 0.2, 0, 0);
 
 	sprintf(str, "number/%d", Nums(int(coloring_per * 100), 0));
-	IMG->Add(str)->Render({ pos.x + 425,pos.y + 260 }, ZERO, ONE / 2.3);
+	IMG->Add(str)->Render({ pos.x + 384 + temp.x,pos.y + 260 + temp.y }, ZERO, ONE * 0.2, 0, 0);
 
-	IMG->Add("Time_Text")->Render({ pos.x + 475,pos.y - 260 });
-	IMG->Add("bar")->Render({ pos.x + 450,pos.y - 240 });
+	//IMG->Add("Time_Text")->Render({ pos.x + 475,pos.y - 260 });
+	//IMG->Add("bar")->Render({ pos.x + 450,pos.y - 240 });
 	sprintf(str, "number/%d", Nums(int(time), 0));
-	IMG->Add(str)->Render({ pos.x + 500,pos.y - 200 }, ZERO, ONE / 1.5);
+	IMG->Add(str)->Render({ pos.x + 485 - 465,pos.y - 220 }, ZERO, ONE * 0.3, 0, 0);
 	sprintf(str, "number/%d", Nums(int(time), 1));
-	IMG->Add(str)->Render({ pos.x + 465,pos.y - 200 }, ZERO, ONE / 1.5);
+	IMG->Add(str)->Render({ pos.x + 465 - 465,pos.y - 220 }, ZERO, ONE * 0.3, 0, 0);
 	sprintf(str, "number/%d", Nums(int(time), 2));
-	IMG->Add(str)->Render({ pos.x + 430,pos.y - 200 }, ZERO, ONE / 1.5);
+	IMG->Add(str)->Render({ pos.x + 445 - 465,pos.y - 220 }, ZERO, ONE * 0.3, 0, 0);
 }
 
 void Player::Release()
 {
 	SAFE_DELETE(main_col);
-	SAFE_DELETE(gun);
+	//SAFE_DELETE(gun);
 }
 
 void Player::Enter(Col* p)

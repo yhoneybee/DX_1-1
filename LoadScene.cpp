@@ -11,6 +11,8 @@ void LoadScene::Init()
 	AddAnim("boss_BOOM");
 	AddAnim("player_idle");
 	AddAnim("Start", "START_", "");
+	AddAnim("Logo_anim", "LogoFrame_", "");
+	AddAnim("Back", "Backframe_", "");
 
 	AddImg("/bullet/bullet_1");
 	AddImg("/bullet/bullet_2");
@@ -79,6 +81,13 @@ void LoadScene::Init()
 	AddImg("Time_Text");
 	AddImg("Title");
 	AddImg("yes-tic");
+	AddImg("play");
+	AddImg("Credit");
+	AddImg("CreditBG");
+	AddImg("score_ui");
+	AddImg("ST_1");
+	AddImg("ST_2");
+	AddImg("ST_3");
 
 	IMG->Add("gage_infill");
 

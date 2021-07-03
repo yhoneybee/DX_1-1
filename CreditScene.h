@@ -1,23 +1,10 @@
 #pragma once
 #include "Scene.h"
-
-class Title :
+class CreditScene :
     public Scene
 {
 public:
-    Title(int type);
-
-    Texture* bg;
-
-    vector<Texture*> anim;
-    Timer* delay;
-    int index = 0;
-
-    Button* start;
-    Button* credit;
-    Button* exit;
-
-    int type;
+    Button* back;
 
     // Scene을(를) 통해 상속됨
     virtual void Init() override;
@@ -25,3 +12,4 @@ public:
     virtual void Render() override;
     virtual void Release() override;
 };
+

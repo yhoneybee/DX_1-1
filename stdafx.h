@@ -111,6 +111,7 @@ enum BulletCase
 #include "Ingame.h"
 #include "End.h"
 #include "DialogScene.h"
+#include "CreditScene.h"
 
 //OBJ
 #include "MiniMap.h"

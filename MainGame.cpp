@@ -11,7 +11,7 @@ void MainGame::Init()
 	SCENE->Add(new End(1), "clear");
 	SCENE->Add(new End(2), "fail");
 	SCENE->Add(new End(3), "next");
-
+	SCENE->Add(new CreditScene, "credit");
 	SCENE->Add(new DialogScene(1), "dialog1");
 
 	SCENE->Set("load");

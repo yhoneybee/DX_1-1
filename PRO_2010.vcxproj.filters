@@ -248,6 +248,12 @@
     <ClCompile Include="LoadScene.cpp">
       <Filter>Game\scene</Filter>
     </ClCompile>
+    <ClCompile Include="CreditScene.cpp">
+      <Filter>Game\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="ChangeScene.cpp">
+      <Filter>Game\scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -354,6 +360,12 @@
       <Filter>Game\scene</Filter>
     </ClInclude>
     <ClInclude Include="LoadScene.h">
+      <Filter>Game\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CreditScene.h">
+      <Filter>Game\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="ChangeScene.h">
       <Filter>Game\scene</Filter>
     </ClInclude>
   </ItemGroup>

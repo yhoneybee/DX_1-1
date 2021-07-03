@@ -98,7 +98,7 @@ void MiniMap::Update()
 void MiniMap::Render()
 {
 	minimap_bg->Render({ pos.x + 22,pos.y }, ZERO, (ONE / 1.2) / 1.2, 0, 0);
-	minimap->Render(pos, ZERO, ONE / 1.2, 0, 0);
+	minimap->Render({ pos.x + 5,pos.y }, ZERO, ONE / 1.4, 0, 0);
 }
 
 void MiniMap::Release()
