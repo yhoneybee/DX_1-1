@@ -1,12 +1,12 @@
 #pragma once
-class RandomMgr :
-	public st<RandomMgr>
+class UtillMgr :
+	public st<UtillMgr>
 {
 public:
-	RandomMgr()
+	UtillMgr()
 		:rd(), gen(rd()), r() {}
 
-	~RandomMgr() { ; };
+	~UtillMgr() { ; };
 
 	int INT(int min, int max);
 	V2 Vec2(V2 origin);
@@ -15,6 +15,8 @@ public:
 	random_device rd;
 	mt19937 gen;
 	uniform_int_distribution<int> r;
+
+	int player_hp;
 };
 
-#define RANDOM RandomMgr::G()
+#define UTILL UtillMgr::G()

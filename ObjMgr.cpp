@@ -34,6 +34,9 @@ void ObjMgr::Update()
 		Obj* obj = (*i);
 		if (obj->flag || MapOut(obj))
 		{
+			if (obj->key == "Bullet")
+				bullets.remove(obj);
+
 			obj->Release();
 			SAFE_DELETE(obj);
 			i = l_obj.erase(i);
@@ -97,6 +100,8 @@ Obj* ObjMgr::Add(Obj* p, const string& key)
 	{
 		p->key = key;
 		l_obj.emplace_back(p);
+		if (key == "Bullet")
+			bullets.emplace_back(p);
 		p->Init();
 		return p;
 	}

@@ -182,7 +182,7 @@
     <ClCompile Include="TimeMgr.cpp">
       <Filter>Mgr\TIME</Filter>
     </ClCompile>
-    <ClCompile Include="RandomMgr.cpp">
+    <ClCompile Include="UtillMgr.cpp">
       <Filter>Mgr\RANDOM</Filter>
     </ClCompile>
     <ClCompile Include="HotKey.cpp">
@@ -296,7 +296,7 @@
     <ClInclude Include="TimeMgr.h">
       <Filter>Mgr\TIME</Filter>
     </ClInclude>
-    <ClInclude Include="RandomMgr.h">
+    <ClInclude Include="UtillMgr.h">
       <Filter>Mgr\RANDOM</Filter>
     </ClInclude>
     <ClInclude Include="HotKey.h">

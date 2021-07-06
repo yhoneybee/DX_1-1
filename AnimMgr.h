@@ -5,10 +5,13 @@ struct Anim
 
 	void Start(bool isLoop = true, bool render_awalys = false)
 	{
-		frame = 0;
-		this->isLoop = isLoop;
-		this->render_awalys = render_awalys;
-		isStart = true;
+		if (!isStart)
+		{
+			frame = 0;
+			this->isLoop = isLoop;
+			this->render_awalys = render_awalys;
+			isStart = true;
+		}
 	}
 
 	void Update();

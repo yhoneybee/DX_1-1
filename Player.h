@@ -5,9 +5,11 @@ class Player :
     public Obj
 {
 public:
+    vector<Effect*> fxs;
     Texture* img;
     Texture* bg;
     Texture* bg_lower;
+    Timer* fx_delay;
     Timer* during;
     Anim* idle;
     Obj* boss;

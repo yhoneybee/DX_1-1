@@ -16,7 +16,7 @@ void HotKey::F1()
 
 void HotKey::F2()
 {
-	int r = RANDOM->INT(1, 4);
+	int r = UTILL->INT(1, 4);
 	switch (r)
 	{
 	case 1:

@@ -9,7 +9,7 @@ Item::Item(int type)
 void Item::Init()
 {
 	main_col = new Col(this, ITEM);
-	dir = RANDOM->Vec2(pos);
+	dir = UTILL->Vec2(pos);
 
 	switch (type)
 	{
@@ -22,7 +22,7 @@ void Item::Init()
 	case 4:
 		break;
 	case 5:
-		type = RANDOM->INT(1, 4);
+		type = UTILL->INT(1, 4);
 		break;
 	}
 }
@@ -36,7 +36,7 @@ void Item::Update()
 	for (int y = -range; y <= range; y++)
 		for (int x = -range; x <= range; x++)
 			if (pos.x + x <= L || pos.x + x >= R || pos.y + y <= T || pos.y + y >= B)
-				dir = RANDOM->Vec2(pos);
+				dir = UTILL->Vec2(pos);
 
 	main_col->Set(pos, 50, 50);
 }

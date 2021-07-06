@@ -25,8 +25,8 @@ void Ingame::Init()
 		score = 0;
 		for (size_t i = 0; i < enemy_count; i++)
 		{
-			Enemy* enemy = new Enemy(RANDOM->INT(1, 2));
-			OBJ->Add(enemy, "enemy")->pos = { (float)RANDOM->INT(0, WINX), (float)RANDOM->INT(0, WINY) };
+			Enemy* enemy = new Enemy(UTILL->INT(1, 2));
+			OBJ->Add(enemy, "enemy")->pos = { (float)UTILL->INT(0, WINX), (float)UTILL->INT(0, WINY) };
 			enemys.emplace_back(enemy);
 		}
 		break;
@@ -42,20 +42,13 @@ void Ingame::Update()
 {
 	if (Player::coloring_per >= 80)
 	{
-		switch (type)
-		{
-		case 1:
-			OBJ->Find("boss")->hp = 0;
-			break;
-		case 2:
-			OBJ->Find("boss")->hp = 0;
-			break;
-		}
+		OBJ->Find("boss")->hp = 0;
 	}
 }
 
 void Ingame::Render()
 {
+	IMG->Add("Deep_BG")->Render(CENTER, ZERO, ONE * 1.7);
 }
 
 void Ingame::Release()

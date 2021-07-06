@@ -19,8 +19,8 @@ void CamMgr::Update()
 
 	if (!shake_timer->IsStop())
 	{
-		pos.x += float(RANDOM->INT(-shake_force, shake_force));
-		pos.y += float(RANDOM->INT(-shake_force, shake_force));
+		pos.x += float(UTILL->INT(-shake_force, shake_force));
+		pos.y += float(UTILL->INT(-shake_force, shake_force));
 	}
 
 	M mPos, mScale, mRot;

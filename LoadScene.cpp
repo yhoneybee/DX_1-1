@@ -17,6 +17,9 @@ void LoadScene::Init()
 	AddAnim("transition_effect", "tran_", "");
 	AddAnim("Skill_anim", "Frame_", "");
 	AddAnim("Boss_explosion", "Boss_Ex", "");
+	AddAnim("enemy_explosion", "enemyex_Frame", "");
+	AddAnim("player_explosion", "player_frame", "");
+	AddAnim("volt", "volt_", "");
 
 	AddImg("/bullet/bullet_1");
 	AddImg("/bullet/bullet_2");
@@ -92,6 +95,8 @@ void LoadScene::Init()
 	AddImg("ST_1");
 	AddImg("ST_2");
 	AddImg("ST_3");
+	AddImg("onepixelwhite");
+	AddImg("Deep_BG");
 
 	AddImg("lina_me");
 	AddImg("me_lina");

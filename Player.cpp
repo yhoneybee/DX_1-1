@@ -54,6 +54,8 @@ void Player::Init()
 
 	main_col = new Col(this, P);
 	during = TIME->Create(2);
+	fx_delay = TIME->Create(0.1);
+	fx_delay->Start();
 
 	speed = 3;
 	rot = 0;
@@ -170,15 +172,31 @@ void Player::Update()
 	if (INPUT->Down('X'))
 	{
 		ANIM->Add("Skill_anim", "Frame_", "")->Start(false, true);
+		for each (auto var in OBJ->bullets)
+			var->flag = true;
 	}
+
+	if (cell[int(pos.x)][int(pos.y)] == 1 || cell[int(pos.x)][int(pos.y)] == 0)
+	{
+		if (fx_delay->IsStop())
+		{
+			fxs.emplace_back(new Effect(IMG->Add("onepixelwhite"), pos, UTILL->INT(0, 360), 3));
+			fx_delay->Start();
+		}
+	}
+
+	UTILL->player_hp = hp;
 }
 
 void Player::Render()
 {
+	for (auto& i : fxs)
+		i->Render();
+
 	main_col->Draw();
 	bg_lower->Render();
 	bg->Render(CENTER, ZERO, ONE, 0, 1, D3DCOLOR_RGBA(255, 255, 255, 255));
- 	idle->Render(pos, ZERO, ONE / 2, atan2(dir.x, -dir.y));
+	idle->Render(pos, ZERO, ONE / 2, atan2(dir.x, -dir.y), 0);
 
 	switch (key)
 	{
@@ -207,11 +225,9 @@ void Player::Render()
 
 	IMG->Add("score_ui")->Render({ pos.x,pos.y - 230 }, ZERO, ONE * 0.7, 0, 0);
 
-
-
 	sprintf(str, "ST_%d", SCENE->round);
 	IMG->Add(str)->Render({ pos.x + 440,pos.y - 260 });
-	 
+
 	V2 temp = { -210,-493 };
 
 	sprintf(str, "number/%d", Nums(int(coloring_per), 1));
@@ -241,10 +257,16 @@ void Player::Render()
 	switch (hp)
 	{
 	case 3:
+		IMG->Add("result_bolt")->Render({ pos.x - 200,pos.y - 230 }, ZERO, ONE * 0.27, 0, 0);
+		IMG->Add("result_bolt")->Render({ pos.x - 160,pos.y - 230 }, ZERO, ONE * 0.27, 0, 0);
+		IMG->Add("result_bolt")->Render({ pos.x - 115,pos.y - 230 }, ZERO, ONE * 0.27, 0, 0);
 		break;
 	case 2:
+		IMG->Add("result_bolt")->Render({ pos.x - 160,pos.y - 230 }, ZERO, ONE * 0.27, 0, 0);
+		IMG->Add("result_bolt")->Render({ pos.x - 115,pos.y - 230 }, ZERO, ONE * 0.27, 0, 0);
 		break;
 	case 1:
+		IMG->Add("result_bolt")->Render({ pos.x - 115,pos.y - 230 }, ZERO, ONE * 0.27, 0, 0);
 		break;
 	}
 }
@@ -505,7 +527,7 @@ void Player::AddItem()
 	int temp_per = double(coloring_cells + temp) * 100 / total_cell - double(coloring_cells * 100) / total_cell;
 
 	for (size_t i = 0; i < temp_per % 2; i++)
-		OBJ->Add(new Item(RANDOM->INT(1, 5)), "Item")->pos = { float(RANDOM->INT(L + 1, R - 1)),float(RANDOM->INT(T + 1, B - 1)) };
+		OBJ->Add(new Item(UTILL->INT(1, 5)), "Item")->pos = { float(UTILL->INT(L + 1, R - 1)),float(UTILL->INT(T + 1, B - 1)) };
 }
 
 void Player::NoDamage()

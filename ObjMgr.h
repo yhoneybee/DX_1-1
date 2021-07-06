@@ -18,6 +18,7 @@ public:
 	void Clear();
 	bool MapOut(Obj* p);
 
+	list<Obj*> bullets;
 	list<Obj*> l_obj;
 	list<Col*> l_col;
 	bool layer[TAG_END][TAG_END];

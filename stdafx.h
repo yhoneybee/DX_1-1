@@ -87,7 +87,7 @@ enum BulletCase
 #include "CamMgr.h"
 #include "SceneMgr.h"
 #include "SoundMgr.h"
-#include "RandomMgr.h"
+#include "UtillMgr.h"
 #include "HotKey.h"
 #include "InputMgr.h"
 

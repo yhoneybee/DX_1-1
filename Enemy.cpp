@@ -34,7 +34,7 @@ void Enemy::Init()
 {
 	hp = 500;
 	player = OBJ->Find("player");
-	dir = RANDOM->Vec2(pos);
+	dir = UTILL->Vec2(pos);
 	char str[256];
 	sprintf(str, "enemy%d", type);
 	img = IMG->Add(str);
@@ -86,22 +86,22 @@ void Enemy::Update()
 		pos += dir;
 
 		if (pos.x < L)
-			RANDOM->Reflex(&dir, V2(-1, 0));
+			UTILL->Reflex(&dir, V2(-1, 0));
 		if (pos.x > R)
-			RANDOM->Reflex(&dir, V2(1, 0));
+			UTILL->Reflex(&dir, V2(1, 0));
 		if (pos.y < T)
-			RANDOM->Reflex(&dir, V2(0, -1));
+			UTILL->Reflex(&dir, V2(0, -1));
 		if (pos.y > B)
-			RANDOM->Reflex(&dir, V2(0, 1));
+			UTILL->Reflex(&dir, V2(0, 1));
 
 		if (Player::cell[int(pos.x) + 1][int(pos.y)] == 2)
-			RANDOM->Reflex(&dir, V2(1, 0));
+			UTILL->Reflex(&dir, V2(1, 0));
 		if (Player::cell[int(pos.x) - 1][int(pos.y)] == 2)
-			RANDOM->Reflex(&dir, V2(-1, 0));
+			UTILL->Reflex(&dir, V2(-1, 0));
 		if (Player::cell[int(pos.x)][int(pos.y) + 1] == 2)
-			RANDOM->Reflex(&dir, V2(0, 1));
+			UTILL->Reflex(&dir, V2(0, 1));
 		if (Player::cell[int(pos.x)][int(pos.y) - 1] == 2)
-			RANDOM->Reflex(&dir, V2(0, -1));
+			UTILL->Reflex(&dir, V2(0, -1));
 	}
 
 	int range = 7;
@@ -145,10 +145,14 @@ void Enemy::Update()
 
 	POINT c = { trunc(pos.x) - gap.x, trunc(pos.y) - gap.y };
 
+	if (Player::cell[c.x][c.y] == 3 && type < 7 && !ANIM->Add("enemy_explosion", "enemyex_Frame", "")->isStart)
+		flag = true;
+
 	if (Player::cell[c.x][c.y] == 3)
 		if (type < 7)
 		{
-			flag = true;
+			//flag = true;
+			ANIM->Add("enemy_explosion", "enemyex_Frame", "")->Start(false, false);
 			return;
 		}
 
@@ -159,6 +163,8 @@ void Enemy::Update()
 			if (SCENE->round == 1)
 				SCENE->Set("next");
 			else if (SCENE->round == 2)
+				SCENE->Set("nextnext");
+			else if (SCENE->round == 3)
 				SCENE->Set("clear");
 		}
 		if (type >= 7)
@@ -177,7 +183,6 @@ void Enemy::Update()
 				CAM->scale += V3(0.005, 0.005, 0.005);
 			}
 	}
-
 	//for (int y = -range; y <= range; y++)
 	//	for (int x = -range; x <= range; x++)
 	//		if (Player::cell[c.x + x >= CELLSIZE_X ? CELLSIZE_X - 1 : c.x + x][c.y + y >= CELLSIZE_Y ? CELLSIZE_Y - 1 : c.y + y] == 2)
@@ -187,10 +192,14 @@ void Enemy::Update()
 void Enemy::Render()
 {
 	main_col->Draw();
+
 	for (auto& i : fxs)
 		i->Render();
+
 	img->Render(pos, ZERO, ONE, atan2(dir.x, -dir.y), 0);
 	death->Render(CAM->pos, ZERO, ONE * 2, 0, 0);
+	if (Player::cell[int(pos.x)][int(pos.y)] == 3 && type < 7)
+		ANIM->Add("enemy_explosion", "enemyex_Frame", "")->Render(pos, ZERO, ONE, 0, 0);
 }
 
 void Enemy::Release()
