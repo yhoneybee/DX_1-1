@@ -389,7 +389,7 @@
     <ClCompile Include="AnimMgr.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Button.cpp" />
-    <ClCompile Include="ChangeScene.cpp" />
+    <ClCompile Include="ChangeEffect.cpp" />
     <ClCompile Include="CreditScene.cpp" />
     <ClCompile Include="Dialog.cpp" />
     <ClCompile Include="DialogScene.cpp" />
@@ -418,7 +418,7 @@
     <ClInclude Include="Bullet.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="CamMgr.h" />
-    <ClInclude Include="ChangeScene.h" />
+    <ClInclude Include="ChangeEffect.h" />
     <ClInclude Include="Col.h" />
     <ClInclude Include="CreditScene.h" />
     <ClInclude Include="Dialog.h" />

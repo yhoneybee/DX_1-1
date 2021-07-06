@@ -251,8 +251,8 @@
     <ClCompile Include="CreditScene.cpp">
       <Filter>Game\scene</Filter>
     </ClCompile>
-    <ClCompile Include="ChangeScene.cpp">
-      <Filter>Game\scene</Filter>
+    <ClCompile Include="ChangeEffect.cpp">
+      <Filter>Game\obj\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -365,8 +365,8 @@
     <ClInclude Include="CreditScene.h">
       <Filter>Game\scene</Filter>
     </ClInclude>
-    <ClInclude Include="ChangeScene.h">
-      <Filter>Game\scene</Filter>
+    <ClInclude Include="ChangeEffect.h">
+      <Filter>Game\obj\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

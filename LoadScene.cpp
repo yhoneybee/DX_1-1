@@ -16,6 +16,7 @@ void LoadScene::Init()
 	AddAnim("ping", "ping_Frame", "");
 	AddAnim("transition_effect", "tran_", "");
 	AddAnim("Skill_anim", "Frame_", "");
+	AddAnim("Boss_explosion", "Boss_Ex", "");
 
 	AddImg("/bullet/bullet_1");
 	AddImg("/bullet/bullet_2");
@@ -108,7 +109,7 @@ void LoadScene::Update()
 {
 	if (loads.empty())
 	{
-		SCENE->Set("go_title");
+		SCENE->Set("title");
 	}
 	else
 	{

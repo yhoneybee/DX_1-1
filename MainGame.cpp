@@ -14,11 +14,6 @@ void MainGame::Init()
 	SCENE->Add(new CreditScene, "credit");
 	SCENE->Add(new DialogScene(1), "dialog1");
 
-	SCENE->Add(new ChangeScene("title"), "go_title");
-	SCENE->Add(new ChangeScene("credit"), "go_credit");
-
-	SCENE->Add(new ChangeScene("dialog1"), "go_dialog1");
-
 	SCENE->Set("load");
 }
 

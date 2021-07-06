@@ -57,7 +57,7 @@ void Player::Init()
 
 	speed = 3;
 	rot = 0;
-	hp = 1;
+	hp = 3;
 	def = 0;
 	title_a = 255;
 	draw_mode = false;
@@ -178,7 +178,7 @@ void Player::Render()
 	main_col->Draw();
 	bg_lower->Render();
 	bg->Render(CENTER, ZERO, ONE, 0, 1, D3DCOLOR_RGBA(255, 255, 255, 255));
-	idle->Render(pos, ZERO, ONE / 2, atan2(dir.x, -dir.y));
+ 	idle->Render(pos, ZERO, ONE / 2, atan2(dir.x, -dir.y));
 
 	switch (key)
 	{
@@ -207,9 +207,11 @@ void Player::Render()
 
 	IMG->Add("score_ui")->Render({ pos.x,pos.y - 230 }, ZERO, ONE * 0.7, 0, 0);
 
+
+
 	sprintf(str, "ST_%d", SCENE->round);
 	IMG->Add(str)->Render({ pos.x + 440,pos.y - 260 });
-
+	 
 	V2 temp = { -210,-493 };
 
 	sprintf(str, "number/%d", Nums(int(coloring_per), 1));
@@ -235,6 +237,16 @@ void Player::Render()
 	IMG->Add(str)->Render({ pos.x + 445 - 465,pos.y - 220 }, ZERO, ONE * 0.3, 0, 0);
 
 	ANIM->Add("Skill_anim", "Frame_", "")->Render({ pos.x + 400,pos.y + 200 }, ZERO, ONE, 0, 0);
+
+	switch (hp)
+	{
+	case 3:
+		break;
+	case 2:
+		break;
+	case 1:
+		break;
+	}
 }
 
 void Player::Release()

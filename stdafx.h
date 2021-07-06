@@ -103,6 +103,7 @@ enum BulletCase
 #include "Button.h"
 #include "Window.h"
 #include "Dialog.h"
+#include "ChangeEffect.h"
 
 
 //SCENE
@@ -112,7 +113,6 @@ enum BulletCase
 #include "End.h"
 #include "DialogScene.h"
 #include "CreditScene.h"
-#include "ChangeScene.h"
 
 //OBJ
 #include "MiniMap.h"

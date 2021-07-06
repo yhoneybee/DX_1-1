@@ -1,3 +1,6 @@
+
+
+
 #include "DXUT.h"
 #include "Enemy.h"
 
@@ -67,7 +70,7 @@ void Enemy::Init()
 		break;
 	}
 
-	death = ANIM->Add("boss_BOOM");
+	death = ANIM->Add("Boss_explosion", "Boss_Ex", "");
 	timer = TIME->Create(cool);
 	timer->Start();
 	during = TIME->Create(3);
@@ -187,7 +190,7 @@ void Enemy::Render()
 	for (auto& i : fxs)
 		i->Render();
 	img->Render(pos, ZERO, ONE, atan2(dir.x, -dir.y), 0);
-	death->Render(CAM->pos, ZERO, ONE, 0, 0);
+	death->Render(CAM->pos, ZERO, ONE * 2, 0, 0);
 }
 
 void Enemy::Release()
