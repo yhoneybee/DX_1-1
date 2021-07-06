@@ -3,7 +3,7 @@
 
 void CreditScene::Init()
 {
-	back = new Button(IMG->Add("Exit"), { float(L + 200),float(B - 100) }, "", 270, 80, 1, [&]()->void {SCENE->Set("title"); });
+	back = new Button(IMG->Add("Exit"), { float(L + 200),float(B - 100) }, "", 270, 80, 1, [&]()->void {SCENE->Set("go_title"); });
 	ANIM->Add("Back", "Backframe_", "")->Start();
 	ANIM->Add("Logo_anim", "LogoFrame_", "")->Start();
 }

@@ -166,6 +166,11 @@ void Player::Update()
 	//{
 	//	gun->pattern = gun->pattern + 1 > gun->GetMaxPattern() ? gun->GetMaxPattern() : gun->pattern + 1;
 	//}
+
+	if (INPUT->Down('X'))
+	{
+		ANIM->Add("Skill_anim", "Frame_", "")->Start(false, true);
+	}
 }
 
 void Player::Render()
@@ -228,6 +233,8 @@ void Player::Render()
 	IMG->Add(str)->Render({ pos.x + 465 - 465,pos.y - 220 }, ZERO, ONE * 0.3, 0, 0);
 	sprintf(str, "number/%d", Nums(int(time), 2));
 	IMG->Add(str)->Render({ pos.x + 445 - 465,pos.y - 220 }, ZERO, ONE * 0.3, 0, 0);
+
+	ANIM->Add("Skill_anim", "Frame_", "")->Render({ pos.x + 400,pos.y + 200 }, ZERO, ONE, 0, 0);
 }
 
 void Player::Release()

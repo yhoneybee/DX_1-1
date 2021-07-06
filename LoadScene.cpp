@@ -13,6 +13,9 @@ void LoadScene::Init()
 	AddAnim("Start", "START_", "");
 	AddAnim("Logo_anim", "LogoFrame_", "");
 	AddAnim("Back", "Backframe_", "");
+	AddAnim("ping", "ping_Frame", "");
+	AddAnim("transition_effect", "tran_", "");
+	AddAnim("Skill_anim", "Frame_", "");
 
 	AddImg("/bullet/bullet_1");
 	AddImg("/bullet/bullet_2");
@@ -89,6 +92,13 @@ void LoadScene::Init()
 	AddImg("ST_2");
 	AddImg("ST_3");
 
+	AddImg("lina_me");
+	AddImg("me_lina");
+	AddImg("me_trickster");
+	AddImg("trickster_me");
+	AddImg("Skip");
+	AddImg("Story_BG");
+
 	IMG->Add("gage_infill");
 
 	load_count = loads.size();
@@ -98,7 +108,7 @@ void LoadScene::Update()
 {
 	if (loads.empty())
 	{
-		SCENE->Set("title");
+		SCENE->Set("go_title");
 	}
 	else
 	{

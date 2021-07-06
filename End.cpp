@@ -23,19 +23,19 @@ void End::Init()
 	{
 	case 1:
 		ANIM->Add("clear_title", "Clear_", "")->Start(false, true);
-		restart = new Button(IMG->Add("BigBlue"), { CENTER.x - 300,CENTER.y + 300 }, "", 160, 160, 1, [&]()->void {SCENE->Set("stage1"); });
-		title = new Button(IMG->Add("BigBlue"), { float(R - 100),float(B - 100) }, "", 160, 160, 1, [&]()->void {SCENE->Set("title"); });
+		restart = new Button(IMG->Add("BigBlue"), { CENTER.x,CENTER.y + 300 }, "", 160, 160, 1, [&]()->void {SCENE->Set("stage1"); });
+		title = new Button(IMG->Add("BigBlue"), { float(R - 100),float(B - 100) }, "", 160, 160, 1, [&]()->void {SCENE->Set("go_title"); });
 		break;
 	case 2:
 		ANIM->Add("fail_title", "FAIL_", "")->Start(false, true);
 		restart = new Button(IMG->Add("BigBlue"), { CENTER.x,CENTER.y + 270 }, "", 160, 160, 1, [&]()->void {SCENE->Set("stage1"); });
-		title = new Button(IMG->Add("BigBlue"), { float(R - 100),float(B - 100) }, "", 160, 160, 1, [&]()->void {SCENE->Set("title"); });
+		title = new Button(IMG->Add("BigBlue"), { float(R - 100),float(B - 100) }, "", 160, 160, 1, [&]()->void {SCENE->Set("go_title"); });
 		break;
 	case 3:
 		ANIM->Add("clear_title", "Clear_", "")->Start(false, true);
 		next = new Button(IMG->Add("BigBlue"), { CENTER.x - 100,CENTER.y + 270 }, "", 160, 160, 1, [&]()->void {SCENE->Set("stage2"); });
 		restart = new Button(IMG->Add("BigBlue"), { CENTER.x + 100,CENTER.y + 270 }, "", 160, 160, 1, [&]()->void {SCENE->Set("stage1"); });
-		title = new Button(IMG->Add("BigBlue"), { float(R - 100),float(B - 100) }, "", 160, 160, 1, [&]()->void {SCENE->Set("title"); });
+		title = new Button(IMG->Add("BigBlue"), { float(R - 100),float(B - 100) }, "", 160, 160, 1, [&]()->void {SCENE->Set("go_title"); });
 		break;
 	}
 }

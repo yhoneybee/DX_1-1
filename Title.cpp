@@ -18,11 +18,12 @@ void Title::Init()
 	case 2:
 		bg = IMG->Add("BG");
 
-		start = new Button(IMG->Add("play"), { CENTER.x,CENTER.y + 255 }, "", 225, 100, 1, [&]()->void {SCENE->Set("dialog1"); });
-		credit = new Button(IMG->Add("Credit"), { CENTER.x + 250,CENTER.y + 255 }, "", 225, 50, 1, [&]()->void {SCENE->Set("credit"); });
+		start = new Button(IMG->Add("play"), { CENTER.x,CENTER.y + 255 }, "", 225, 100, 1, [&]()->void {SCENE->Set("go_dialog1"); });
+		credit = new Button(IMG->Add("Credit"), { CENTER.x + 250,CENTER.y + 255 }, "", 225, 50, 1, [&]()->void {SCENE->Set("go_credit"); });
 		exit = new Button(IMG->Add("Exit"), { CENTER.x - 250,CENTER.y + 255 }, "", 225, 50, 1, [&]()->void {PostQuitMessage(0); });
 
 		ANIM->Add("Logo_anim", "LogoFrame_", "")->Start();
+		ANIM->Add("Skill_anim", "Frame_", "")->Start(false, true);
 		break;
 	}
 }

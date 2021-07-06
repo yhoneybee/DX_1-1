@@ -112,6 +112,7 @@ enum BulletCase
 #include "End.h"
 #include "DialogScene.h"
 #include "CreditScene.h"
+#include "ChangeScene.h"
 
 //OBJ
 #include "MiniMap.h"
