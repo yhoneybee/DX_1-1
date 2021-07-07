@@ -151,7 +151,6 @@ void Enemy::Update()
 	if (Player::cell[c.x][c.y] == 3)
 		if (type < 7)
 		{
-			//flag = true;
 			ANIM->Add("enemy_explosion", "enemyex_Frame", "")->Start(false, false);
 			return;
 		}
@@ -167,7 +166,7 @@ void Enemy::Update()
 			else if (SCENE->round == 3)
 				SCENE->Set("clear");
 		}
-		if (type >= 7)
+		if (type >= 6)
 			if (!death->isStart)
 			{
 				if (!isAnim)

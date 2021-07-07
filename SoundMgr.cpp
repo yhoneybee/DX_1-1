@@ -1,24 +1,6 @@
 #include "DXUT.h"
 #include "SoundMgr.h"
 
-Sound* Sound::SetVolume(LONG volume)
-{
-	SOUND->SetVolume(this, volume);
-	return this;
-}
-
-Sound* Sound::SetFrequency(LONG frequency)
-{
-	SOUND->SetFrequency(this, frequency);
-	return this;
-}
-
-Sound* Sound::SetPan(LONG pan)
-{
-	SOUND->SetPan(this, pan);
-	return this;
-}
-
 void Sound::Play(bool loop)
 {
 	SOUND->Play(this, loop);
@@ -75,7 +57,7 @@ Sound* SoundMgr::Find(const string& key)
 void SoundMgr::Play(Sound* p, bool loop)
 {
 	if (p)
-		p->p->Play(0, loop);
+		p->p->Play(0, loop, volume, frequency, pan);
 }
 
 void SoundMgr::Copy(Sound* p)
@@ -93,25 +75,4 @@ void SoundMgr::Stop(Sound* p)
 {
 	if (p)
 		p->p->Stop();
-}
-
-Sound* SoundMgr::SetVolume(Sound* p, LONG volume)
-{
-	if (p)
-		p->p->GetBuffer(0)->SetVolume(volume);
-	return p;
-}
-
-Sound* SoundMgr::SetFrequency(Sound* p, LONG frequency)
-{
-	if (p)
-		p->p->GetBuffer(0)->SetFrequency(frequency);
-	return p;
-}
-
-Sound* SoundMgr::SetPan(Sound* p, LONG pan)
-{
-	if (p)
-		p->p->GetBuffer(0)->SetPan(pan);
-	return p;
 }

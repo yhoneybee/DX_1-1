@@ -17,7 +17,7 @@ void Dialog::Update()
 		else
 		{
 			++index;
-
+			SOUND->Add("DIALOG", L"DIALOG")->Copy();
 			//swap(chater1.pos, chater2.pos);
 			//swap(chater1.alpha, chater2.alpha);
 		}

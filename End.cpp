@@ -22,17 +22,20 @@ void End::Init()
 	switch (type)
 	{
 	case 1:
+		SOUND->Add("CLEAR", L"CLEAR")->Copy();
 		ANIM->Add("clear_title", "Clear_", "")->Start(false, true);
 		restart = new Button(IMG->Add("BigBlue"), { CENTER.x,CENTER.y + 300 }, "", 160, 160, 1, [&]()->void {SCENE->Set("stage1"); OBJ->Add(new ChangeEffect("dialog1"), "ChangeEffect"); });
 		title = new Button(IMG->Add("BigBlue"), { float(R - 100),float(B - 100) }, "", 160, 160, 1, [&]()->void {SCENE->Set("title"); });
 		ANIM->Add("volt", "volt_", "")->Start(false, true);
 		break;
 	case 2:
+		SOUND->Add("FAIL", L"FAIL")->Copy();
 		ANIM->Add("fail_title", "FAIL_", "")->Start(false, true);
 		restart = new Button(IMG->Add("BigBlue"), { CENTER.x,CENTER.y + 270 }, "", 160, 160, 1, [&]()->void {SCENE->Set("stage1"); OBJ->Add(new ChangeEffect("dialog1"), "ChangeEffect"); });
 		title = new Button(IMG->Add("BigBlue"), { float(R - 100),float(B - 100) }, "", 160, 160, 1, [&]()->void {SCENE->Set("title"); });
 		break;
 	case 3:
+		SOUND->Add("CLEAR", L"CLEAR")->Copy();
 		ANIM->Add("clear_title", "Clear_", "")->Start(false, true);
 		next = new Button(IMG->Add("BigBlue"), { CENTER.x - 100,CENTER.y + 270 }, "", 160, 160, 1, [&]()->void {SCENE->Set("stage2"); OBJ->Add(new ChangeEffect("dialog2"), "ChangeEffect"); });
 		restart = new Button(IMG->Add("BigBlue"), { CENTER.x + 100,CENTER.y + 270 }, "", 160, 160, 1, [&]()->void {SCENE->Set("stage1"); OBJ->Add(new ChangeEffect("dialog1"), "ChangeEffect"); });
@@ -40,6 +43,7 @@ void End::Init()
 		ANIM->Add("volt", "volt_", "")->Start(false, true);
 		break;
 	case 4:
+		SOUND->Add("CLEAR", L"CLEAR")->Copy();
 		ANIM->Add("clear_title", "Clear_", "")->Start(false, true);
 		next = new Button(IMG->Add("BigBlue"), { CENTER.x - 100,CENTER.y + 270 }, "", 160, 160, 1, [&]()->void {SCENE->Set("stage3"); OBJ->Add(new ChangeEffect("dialog3"), "ChangeEffect"); });
 		restart = new Button(IMG->Add("BigBlue"), { CENTER.x + 100,CENTER.y + 270 }, "", 160, 160, 1, [&]()->void {SCENE->Set("stage1"); OBJ->Add(new ChangeEffect("dialog1"), "ChangeEffect"); });

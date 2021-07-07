@@ -71,7 +71,10 @@ void Button::Stay(Col* p)
 		{
 		case MOUSE:
 			if (INPUT->Down(VK_LBUTTON))
+			{
+				SOUND->Add("CLICK", L"CLICK")->Copy();
 				func();
+			}
 			break;
 		}
 }

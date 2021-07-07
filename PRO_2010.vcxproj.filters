@@ -54,9 +54,6 @@
     <Filter Include="Mgr\TIME">
       <UniqueIdentifier>{1ef2df51-b263-4293-b67f-afc6163ca258}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Mgr\RANDOM">
-      <UniqueIdentifier>{7ee7371d-a105-4337-9669-be886a770c3f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Mgr\HOT">
       <UniqueIdentifier>{807e40be-cee2-4c80-aa68-3609833d6b2b}</UniqueIdentifier>
     </Filter>
@@ -83,6 +80,9 @@
     </Filter>
     <Filter Include="Mgr\ANIM">
       <UniqueIdentifier>{e8165ad3-5925-4b3e-9342-fd0e1ec46d6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mgr\UTILL">
+      <UniqueIdentifier>{7ee7371d-a105-4337-9669-be886a770c3f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -183,7 +183,7 @@
       <Filter>Mgr\TIME</Filter>
     </ClCompile>
     <ClCompile Include="UtillMgr.cpp">
-      <Filter>Mgr\RANDOM</Filter>
+      <Filter>Mgr\UTILL</Filter>
     </ClCompile>
     <ClCompile Include="HotKey.cpp">
       <Filter>Mgr\HOT</Filter>
@@ -297,7 +297,7 @@
       <Filter>Mgr\TIME</Filter>
     </ClInclude>
     <ClInclude Include="UtillMgr.h">
-      <Filter>Mgr\RANDOM</Filter>
+      <Filter>Mgr\UTILL</Filter>
     </ClInclude>
     <ClInclude Include="HotKey.h">
       <Filter>Mgr\HOT</Filter>

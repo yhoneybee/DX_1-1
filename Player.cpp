@@ -171,6 +171,8 @@ void Player::Update()
 
 	if (INPUT->Down('X'))
 	{
+		if (!ANIM->Add("Skill_anim", "Frame_", "")->isStart)
+			SOUND->Add("COUNTDOWN", L"COUNTDOWN")->Copy();
 		ANIM->Add("Skill_anim", "Frame_", "")->Start(false, true);
 		for each (auto var in OBJ->bullets)
 			var->flag = true;
@@ -253,6 +255,10 @@ void Player::Render()
 	IMG->Add(str)->Render({ pos.x + 445 - 465,pos.y - 220 }, ZERO, ONE * 0.3, 0, 0);
 
 	ANIM->Add("Skill_anim", "Frame_", "")->Render({ pos.x + 400,pos.y + 200 }, ZERO, ONE, 0, 0);
+	if (ANIM->Add("Skill_anim", "Frame_", "")->frame == ANIM->Add("Skill_anim", "Frame_", "")->anim.size() - 3)
+	{
+
+	}
 
 	switch (hp)
 	{
@@ -275,6 +281,9 @@ void Player::Release()
 {
 	SAFE_DELETE(main_col);
 	//SAFE_DELETE(gun);
+	for (auto& i : fxs)
+		SAFE_DELETE(i);
+	fxs.clear();
 }
 
 void Player::Enter(Col* p)
@@ -284,6 +293,7 @@ void Player::Enter(Col* p)
 	case EATK:
 		if (Current() == 1 || Current() == 0)
 		{
+			SOUND->Add("TAKE", L"TAKE")->Copy();
 			hp--;
 			pos = start;
 			DrawArea(2);

@@ -10,6 +10,7 @@ void Bullet::Init()
 {
 	speed = 10;
 	delay = TIME->Create(0.5f);
+
 	main_col = new Col(this, (eatk ? EATK : PATK), 1);
 	switch (gc)
 	{
