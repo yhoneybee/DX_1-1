@@ -1,9 +1,9 @@
 #include "DXUT.h"
 #include "SoundMgr.h"
 
-void Sound::Play(bool loop)
+void Sound::Play(bool loop, LONG volume, LONG frequency, LONG pan)
 {
-	SOUND->Play(this, loop);
+	SOUND->Play(this, loop, volume, frequency, pan);
 }
 
 void Sound::Copy()
@@ -54,7 +54,7 @@ Sound* SoundMgr::Find(const string& key)
 	return nullptr;
 }
 
-void SoundMgr::Play(Sound* p, bool loop)
+void SoundMgr::Play(Sound* p, bool loop, LONG volume, LONG frequency, LONG pan)
 {
 	if (p)
 		p->p->Play(0, loop, volume, frequency, pan);
