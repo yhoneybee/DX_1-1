@@ -30,8 +30,16 @@ void Player::Init()
 	idle = ANIM->Add("player_idle");
 	idle->Start();
 	boss = OBJ->Find("boss");
-	bg = IMG->ReLoad("round1_before");
-	bg_lower = IMG->Add("round1_after");
+
+	char str_before[256];
+	char str_after[256];
+
+	sprintf(str_before, "round%d_before", SCENE->round);
+	sprintf(str_after, "round%d_after", SCENE->round);
+
+	bg = IMG->ReLoad(str_before);
+	bg_lower = IMG->ReLoad(str_after);
+
 	img = IMG->Add("player");
 
 	OBJ->Add(new MiniMap, "minimap");

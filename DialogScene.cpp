@@ -7,6 +7,9 @@ void DialogScene::Init()
 	char str[256];
 	sprintf(str, "stage%d", type);
 	dialog->go_scene = str;
+
+	CAM->Reset();
+
 	switch (type)
 	{
 	case 1:

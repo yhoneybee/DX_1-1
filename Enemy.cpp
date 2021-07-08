@@ -164,7 +164,7 @@ void Enemy::Update()
 			else if (SCENE->round == 2)
 				SCENE->Set("nextnext");
 			else if (SCENE->round == 3)
-				SCENE->Set("clear");
+				SCENE->Set("dialog4");
 		}
 		if (type >= 6)
 			if (!death->isStart)

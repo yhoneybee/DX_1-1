@@ -6,6 +6,7 @@ void MainGame::Init()
 	SCENE->Add(new LoadScene(), "load");
 	SCENE->Add(new Title(1), "intro");
 	SCENE->Add(new Title(2), "title");
+	SCENE->Add(new Title(3), "cleartitle");
 	SCENE->Add(new Ingame(1), "stage1");
 	SCENE->Add(new Ingame(2), "stage2");
 	SCENE->Add(new Ingame(3), "stage3");

@@ -25,7 +25,7 @@ void End::Init()
 		SOUND->Add("CLEAR", L"CLEAR")->Copy();
 		ANIM->Add("clear_title", "Clear_", "")->Start(false, true);
 		restart = new Button(IMG->Add("BigBlue"), { CENTER.x,CENTER.y + 300 }, "", 160, 160, 1, [&]()->void {SCENE->Set("stage1"); OBJ->Add(new ChangeEffect("dialog1"), "ChangeEffect"); });
-		title = new Button(IMG->Add("BigBlue"), { float(R - 100),float(B - 100) }, "", 160, 160, 1, [&]()->void {SCENE->Set("title"); });
+		title = new Button(IMG->Add("BigBlue"), { float(R - 100),float(B - 100) }, "", 160, 160, 1, [&]()->void {SCENE->Set("cleartitle"); });
 		ANIM->Add("volt", "volt_", "")->Start(false, true);
 		break;
 	case 2:

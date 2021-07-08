@@ -104,6 +104,7 @@ void LoadScene::Init()
 	AddImg("trickster_me");
 	AddImg("Skip");
 	AddImg("Story_BG");
+	AddImg("ClearIcon");
 
 	IMG->Add("gage_infill");
 

@@ -12,7 +12,7 @@ Ingame::Ingame(int type)
 
 void Ingame::Init()
 {
-	SOUND->Add("BGM", L"BGM")->Play(true, -1500);
+	SOUND->Add("BGM", L"BGM")->Play(true);
 
 	CAM->pos = CENTER;
 	CAM->scale = { 1,1,1 };
