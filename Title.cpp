@@ -8,6 +8,8 @@ Title::Title(int type)
 
 void Title::Init()
 {
+	SOUND->Find("BGM")->Stop();
+
 	CAM->scale = { 1,1,1 };
 	CAM->pos = CENTER;
 

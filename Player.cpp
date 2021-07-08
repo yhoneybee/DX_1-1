@@ -263,10 +263,6 @@ void Player::Render()
 	IMG->Add(str)->Render({ pos.x + 445 - 465,pos.y - 220 }, ZERO, ONE * 0.3, 0, 0);
 
 	ANIM->Add("Skill_anim", "Frame_", "")->Render({ pos.x + 400,pos.y + 200 }, ZERO, ONE, 0, 0);
-	if (ANIM->Add("Skill_anim", "Frame_", "")->frame == ANIM->Add("Skill_anim", "Frame_", "")->anim.size() - 3)
-	{
-
-	}
 
 	switch (hp)
 	{
@@ -447,6 +443,8 @@ void Player::DrawArea(int draw_flag)
 
 	if (draw_flag != 1)
 		AutoFill();
+
+	SOUND->Add("DRAW", L"DRAW")->Copy();
 
 	drawing = false;
 }

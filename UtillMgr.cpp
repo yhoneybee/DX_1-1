@@ -3,8 +3,7 @@
 
 int UtillMgr::INT(int min, int max)
 {
-	r = uniform_int_distribution<int>(min, max);
-	return r(gen);
+	return (*(new uniform_int_distribution<int>(min, max)))(gen);
 }
 
 V2 UtillMgr::Vec2(V2 origin)

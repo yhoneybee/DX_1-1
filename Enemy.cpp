@@ -17,21 +17,28 @@ void Enemy::Rush()
 	img = IMG->Add(str);
 }
 
-void Enemy::CircleShot(float angle, int shots)
+void Enemy::CircleShot(int shots)
 {
-	float value = angle / shots;
-	float look = D3DXToDegree(atan2f(dir.x, -dir.y));
-	for (float i = look - (angle / 2) - 90; i <= look + (angle / 2) - 90; i += value)
+	float angle = 360 / shots;
+	for (float i = 0; i <= 360; i += angle)
 	{
-		OBJ->Add(new Bullet(BulletCase::SHURIKEN, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }, true), "Bullet")->pos = pos;
-		//OBJ->Add(new Bullet(BulletCase::CRICLE, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }, true), "Bullet")->pos = pos;
-		//OBJ->Add(new Bullet(BulletCase::HURRICANE, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }, true), "Bullet")->pos = pos;
+		OBJ->Add(new Bullet(BulletCase::CRICLE, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }, true), "Bullet")->pos = pos;
+		OBJ->Add(new Bullet(BulletCase::HURRICANE, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }, true), "Bullet")->pos = pos;
+	}
+}
+
+void Enemy::CrossShot()
+{
+	for (int i = 0; i < 360; i += 45)
+	{
 		OBJ->Add(new Bullet(BulletCase::CROSS, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }, true), "Bullet")->pos = pos;
+		OBJ->Add(new Bullet(BulletCase::SHURIKEN, { cos(D3DXToRadian(i)), sin(D3DXToRadian(i)) }, true), "Bullet")->pos = pos;
 	}
 }
 
 void Enemy::Init()
 {
+	isAnim = false;
 	hp = 500;
 	player = OBJ->Find("player");
 	dir = UTILL->Vec2(pos);
@@ -61,6 +68,7 @@ void Enemy::Init()
 	case 5:
 		break;
 	case 6:
+		cool = 3;
 		break;
 	case 7:
 		cool = 10;
@@ -111,6 +119,18 @@ void Enemy::Update()
 	case 1:
 	case 4:
 		break;
+	case 6:
+		if (timer->IsStop())
+		{
+			add = !add;
+			timer->Start();
+		}
+		if (add)
+			add_pos += DT * 100;
+		else
+			add_pos -= DT * 100;
+
+		break;
 	case 7:
 		range = 110;
 		if (timer->IsStop())
@@ -135,23 +155,44 @@ void Enemy::Update()
 		range = 110;
 		if (timer->IsStop())
 		{
-			CircleShot(360, 36);
+			switch (UTILL->INT(1, 2))
+			{
+			case 1:
+				CircleShot(36);
+				break;
+			case 2:
+				CrossShot();
+				break;
+			}
 			timer->Start();
 		}
 		break;
 	}
 
-	main_col->Set(pos, 16 * size.x, 16 * size.y);
+	main_col->Set(pos, min(img->info.Width, img->info.Height), min(img->info.Width, img->info.Height));
 
 	POINT c = { trunc(pos.x) - gap.x, trunc(pos.y) - gap.y };
 
-	if (Player::cell[c.x][c.y] == 3 && type < 7 && !ANIM->Add("enemy_explosion", "enemyex_Frame", "")->isStart)
-		flag = true;
-
 	if (Player::cell[c.x][c.y] == 3)
-		if (type < 7)
+		if (type < 6)
 		{
-			ANIM->Add("enemy_explosion", "enemyex_Frame", "")->Start(false, false);
+			if (!ANIM->Add("enemy_explosion", "enemyex_Frame", "")->isStart)
+			{
+				char explosion[256];
+				sprintf(explosion, "EXPLOSION%d", UTILL->INT(1, 5));
+				wchar_t* wchar;
+				int size = MultiByteToWideChar(CP_ACP, 0, explosion, -1, nullptr, NULL);
+				wchar = new wchar_t[size];
+				MultiByteToWideChar(CP_ACP, 0, explosion, strlen(explosion) + 1, wchar, size);
+				SOUND->Add(explosion, wchar)->Copy();
+				SAFE_DELETE(wchar);
+				flag = true;
+			}
+			if (!isAnim)
+			{
+				isAnim = true;
+				ANIM->Add("enemy_explosion", "enemyex_Frame", "")->Start(false, false);
+			}
 			return;
 		}
 
@@ -196,6 +237,15 @@ void Enemy::Render()
 		i->Render();
 
 	img->Render(pos, ZERO, ONE, atan2(dir.x, -dir.y), 0);
+
+	if (type == 6)
+	{
+		img->Render({ pos.x + add_pos,pos.y + add_pos }, ZERO, ONE, atan2(dir.x, -dir.y), 0, D3DXCOLOR(0.5, 0.5, 0.5, 0.3));
+		img->Render({ pos.x - add_pos,pos.y - add_pos }, ZERO, ONE, atan2(dir.x, -dir.y), 0, D3DXCOLOR(0.5, 0.5, 0.5, 0.3));
+		img->Render({ pos.x + add_pos,pos.y - add_pos }, ZERO, ONE, atan2(dir.x, -dir.y), 0, D3DXCOLOR(0.5, 0.5, 0.5, 0.3));
+		img->Render({ pos.x - add_pos,pos.y + add_pos }, ZERO, ONE, atan2(dir.x, -dir.y), 0, D3DXCOLOR(0.5, 0.5, 0.5, 0.3));
+	}
+
 	death->Render(CAM->pos, ZERO, ONE * 2, 0, 0);
 	if (Player::cell[int(pos.x)][int(pos.y)] == 3 && type < 7)
 		ANIM->Add("enemy_explosion", "enemyex_Frame", "")->Render(pos, ZERO, ONE, 0, 0);

@@ -19,6 +19,8 @@ void End::Init()
 
 	map = new ScrollMap(IMG->Add("Bg"));
 
+	play_anim = true;
+
 	switch (type)
 	{
 	case 1:
@@ -26,7 +28,6 @@ void End::Init()
 		ANIM->Add("clear_title", "Clear_", "")->Start(false, true);
 		restart = new Button(IMG->Add("BigBlue"), { CENTER.x,CENTER.y + 300 }, "", 160, 160, 1, [&]()->void {SCENE->Set("stage1"); OBJ->Add(new ChangeEffect("dialog1"), "ChangeEffect"); });
 		title = new Button(IMG->Add("BigBlue"), { float(R - 100),float(B - 100) }, "", 160, 160, 1, [&]()->void {SCENE->Set("cleartitle"); });
-		ANIM->Add("volt", "volt_", "")->Start(false, true);
 		break;
 	case 2:
 		SOUND->Add("FAIL", L"FAIL")->Copy();
@@ -40,7 +41,6 @@ void End::Init()
 		next = new Button(IMG->Add("BigBlue"), { CENTER.x - 100,CENTER.y + 270 }, "", 160, 160, 1, [&]()->void {SCENE->Set("stage2"); OBJ->Add(new ChangeEffect("dialog2"), "ChangeEffect"); });
 		restart = new Button(IMG->Add("BigBlue"), { CENTER.x + 100,CENTER.y + 270 }, "", 160, 160, 1, [&]()->void {SCENE->Set("stage1"); OBJ->Add(new ChangeEffect("dialog1"), "ChangeEffect"); });
 		title = new Button(IMG->Add("BigBlue"), { float(R - 100),float(B - 100) }, "", 160, 160, 1, [&]()->void {SCENE->Set("title"); });
-		ANIM->Add("volt", "volt_", "")->Start(false, true);
 		break;
 	case 4:
 		SOUND->Add("CLEAR", L"CLEAR")->Copy();
@@ -48,7 +48,6 @@ void End::Init()
 		next = new Button(IMG->Add("BigBlue"), { CENTER.x - 100,CENTER.y + 270 }, "", 160, 160, 1, [&]()->void {SCENE->Set("stage3"); OBJ->Add(new ChangeEffect("dialog3"), "ChangeEffect"); });
 		restart = new Button(IMG->Add("BigBlue"), { CENTER.x + 100,CENTER.y + 270 }, "", 160, 160, 1, [&]()->void {SCENE->Set("stage1"); OBJ->Add(new ChangeEffect("dialog1"), "ChangeEffect"); });
 		title = new Button(IMG->Add("BigBlue"), { float(R - 100),float(B - 100) }, "", 160, 160, 1, [&]()->void {SCENE->Set("title"); });
-		ANIM->Add("volt", "volt_", "")->Start(false, true);
 		break;
 	}
 }
@@ -86,22 +85,31 @@ void End::Render()
 		break;
 	}
 
-	if (type == 1 || type == 3 || type == 4)
-		switch (UTILL->player_hp)
-		{
-		case 1:
-			ANIM->Add("volt", "volt_", "")->Render({ CENTER.x,CENTER.y });
-			break;
-		case 2:
-			ANIM->Add("volt", "volt_", "")->Render({ CENTER.x - 100,CENTER.y });
-			ANIM->Add("volt", "volt_", "")->Render({ CENTER.x + 100,CENTER.y });
-			break;
-		case 3:
-			ANIM->Add("volt", "volt_", "")->Render({ CENTER.x - 100,CENTER.y });
-			ANIM->Add("volt", "volt_", "")->Render({ CENTER.x,CENTER.y });
-			ANIM->Add("volt", "volt_", "")->Render({ CENTER.x + 100,CENTER.y });
-			break;
-		}
+	if (type != 1 && type != 3 && type != 4) return;
+
+	IMG->Add("result_bolt_slot")->Render({ CENTER.x + 5,CENTER.y });
+
+	switch (UTILL->player_hp)
+	{
+	case 1:
+		ANIM->Add("volt", "volt_", "")->Render({ CENTER.x + 175,CENTER.y });
+		break;
+	case 2:
+		ANIM->Add("volt", "volt_", "")->Render({ CENTER.x,CENTER.y });
+		ANIM->Add("volt", "volt_", "")->Render({ CENTER.x + 175,CENTER.y });
+		break;
+	case 3:
+		ANIM->Add("volt", "volt_", "")->Render({ CENTER.x - 175,CENTER.y });
+		ANIM->Add("volt", "volt_", "")->Render({ CENTER.x,CENTER.y });
+		ANIM->Add("volt", "volt_", "")->Render({ CENTER.x + 175,CENTER.y });
+		break;
+	}
+
+	if (play_anim)
+	{
+		play_anim = false;
+		ANIM->Add("volt", "volt_", "")->Start(false, true);
+	}
 }
 
 void End::Release()
