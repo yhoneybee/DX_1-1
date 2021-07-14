@@ -185,7 +185,7 @@ void Enemy::Update()
 				wchar = new wchar_t[size];
 				MultiByteToWideChar(CP_ACP, 0, explosion, strlen(explosion) + 1, wchar, size);
 				SOUND->Add(explosion, wchar)->Copy();
-				SAFE_DELETE(wchar);
+				SAFE_DELETE_ARRAY(wchar);
 				flag = true;
 			}
 			if (!isAnim)
